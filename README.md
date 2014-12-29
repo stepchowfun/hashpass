@@ -42,9 +42,9 @@ One strategy for cracking passwords is to try hashing all English words, for exa
 
 To defend such attacks, it is crucial that your secret key is unguessable. Longer is better. More random is better. Don't use a single word. Definitely don't use `bananas`. Hashpass doesn't limit the size of your secret key—take advantage of this.
 
-A determined attacker might try *all* strings up to some length. This generally takes longer or requires more computational power, but it's not impossible. For example, a reasonably-equipped hacker might be able to compute a billion hashes per second. There are about 218 trillion 8-character alphanumeric passwords. If passwords are only hashed once, a hacker can crack a random 8-character alphanumeric password in a little over a day, on average.
+A determined attacker might try *all* strings up to some length. This generally takes longer or requires more computational power, but it's not impossible. For example, a reasonably-equipped hacker might be able to compute a trillion hashes per second. There are about 839 quadrillion 10-character alphanumeric passwords. If passwords are only hashed once, a hacker can crack a random 10-character alphanumeric password in a little over four days, on average.
 
-This is called a *brute-force attack*, and it relies on an attacker being able to compute a large number of hashes very quickly. To provide resistance against such attacks, Hashpass applies the hashing function many times (`2^16`, to be exact). This makes testing a password take much longer. On average, our hacker now takes more than 200 years to crack a random 8-character alphanumeric password.
+This is called a *brute-force attack*, and it relies on an attacker being able to compute a large number of hashes very quickly. To provide resistance against such attacks, Hashpass applies the hashing function many times (`2^16`, to be exact). This makes testing a password take much longer. On average, our hacker now takes more than 800 years to crack a random 10-character alphanumeric password.
 
 ## Comparison with traditional password managers
 

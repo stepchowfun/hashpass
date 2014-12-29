@@ -3,7 +3,7 @@
 
   "name": "Hashpass",
   "description": "A simple, stateless password manager for Chrome.",
-  "version": "1.9",
+  "version": "1.9.1",
   "permissions": [
     "tabs",
     "http://*/*",

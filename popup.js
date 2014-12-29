@@ -33,7 +33,7 @@ $(function() {
       var domain = null;
       var matches = tabs[0].url.match(/^http(?:s?):\/\/([^/]*)/);
       if (matches) {
-        domain = matches[1];
+        domain = matches[1].toLowerCase();
       } else {
         // Example cause: files served over the file:// protocol.
         $('#controls').addClass('hidden');

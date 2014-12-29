@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Hashpass</title>
+    <style type="text/css">
+      html {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        font-size: 0.9em;
+        color: #333;
+      }
+
+      #container {
+        width: 332px;
+        zoom: 1;
+      }
+
+      #container:before {
+        content: ' ';
+        display: table;
+        font-size: 0;
+        visibility: hidden;
+      }
+
+      #container:after {
+        content: ' ';
+        display: table;
+        font-size: 0;
+        visibility: hidden;
+        clear: both;
+      }
+
+      input {
+        display: block;
+        box-sizing: border-box;
+        width: 300px;
+        height: 40px;
+        border: 2px solid #ddd;
+        border-radius: 2px;
+        padding: 8px 12px;
+        outline-style: none;
+        line-height: 20px;
+        font-size: 1.2em;
+      }
+
+      input:focus {
+        border-color: #f872ae;
+      }
+
+      input, p {
+        margin: 16px;
+      }
+
+      .small-top-margin {
+        margin-top: 4px;
+      }
+
+      .small-bottom-margin {
+        margin-bottom: 4px;
+      }
+
+      #error {
+        color: #c00;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+    <script type="text/javascript" src="jquery.js"></script>
+    <script type="text/javascript" src="sjcl.js"></script>
+    <script type="text/javascript" src="popup.js"></script>
+  </head>
+  <body>
+    <div id="container" class="hidden">
+      <p id="error"></p>
+      <div id="controls">
+        <p>Domain: <strong><span id="domain"></span></strong></p>
+        <p class="small-bottom-margin">Key:</p>
+        <input id="key" class="small-top-margin" type="password" />
+        <p class="small-bottom-margin password-mode-off">Hash:</p>
+        <input id="hash" class="small-top-margin password-mode-off" type="text" readonly="true" />
+        <p class="fill-instruction password-mode-on">Press <strong>ENTER</strong> to fill in the password field.</p>
+        <p class="pre-instruction password-mode-off"><strong>TIP:</strong> Select a password field first.</p>
+      </div>
+    </div>
+  </body>
+</html>

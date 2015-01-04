@@ -10,6 +10,8 @@ A key feature of Hashpass is that it's stateless. Hashpass never writes to the f
 
 Install Hashpass from the Chrome App Store ([link](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)). You will then see the Hashpass button next to your address bar.
 
+There is also a compatible Android app, courtesy of [Erik Byström](http://blog.slackers.se/). It is available on the Google Play Store ([link](https://play.google.com/store/apps/details?id=se.slackers.hashpass)). The source is available [here](https://github.com/bysse/hashpass-android).
+
 ## A quick tour
 
 Click the Hashpass button and this will pop up:

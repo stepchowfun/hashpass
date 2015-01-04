@@ -16,13 +16,13 @@ Click the Hashpass button and this will pop up:
 
 ![Screenshot](https://raw.githubusercontent.com/boyers/hashpass/master/screenshot1.png)
 
-Hashpass generates a password based on your key and the current domain. Usually you will want to select a password field first. Then Hashpass doesn't show the generated password, giving you the option to fill in the password field instead:
+Hashpass generates a password based on your key and the current domain. Usually you will want to select a password field first. Then Hashpass doesn't show the generated password, giving you the option to fill in the field instead:
 
 ![Screenshot](https://raw.githubusercontent.com/boyers/hashpass/master/screenshot2.png)
 
 ## How passwords are generated
 
-Suppose your secret key is `bananas`, and you are signing up for Facebook. Hashpass combines the current domain name and your secret key as follows: `www.facebook.com/bananas`. It then computes the [SHA-256 hash](http://en.wikipedia.org/wiki/SHA-2) of that string. Then it hashes it again and again, `2^16` times in total. Finally, it outputs the first 96 bits of the result, encoded as 16 characters in [Base64](http://en.wikipedia.org/wiki/Base64). In this example, the final output is `sWwtmA9uA6X9SyXD`. We can verify this result using Python:
+Suppose your secret key is `bananas`, and you're signing up for Facebook. Hashpass combines the current domain name and your secret key with a `/` as follows: `www.facebook.com/bananas`. It then computes the [SHA-256 hash](http://en.wikipedia.org/wiki/SHA-2) of that string. Then it hashes it again and again, `2^16` times in total. Finally, it outputs the first 96 bits of the result, encoded as 16 characters in [Base64](http://en.wikipedia.org/wiki/Base64). In this example, the final output is `sWwtmA9uA6X9SyXD`. We can verify this result using Python:
 
     import hashlib, base64
     bits = 'www.facebook.com/bananas'
@@ -34,15 +34,17 @@ Suppose your secret key is `bananas`, and you are signing up for Facebook. Hashp
 
 If an adversary has your secret key, they have access to all of your accounts. Hashpass never reveals your secret key. But we must make sure that an adversary can't determine it from the generated passwords.
 
-SHA-256 is one of the most widely-used cryptographic hash functions, and is considered unbroken at the time of this writing. This means that given a hash of a random string, an adversary can't find that original string. However, secret keys produced by humans are not perfectly random. Regrettably, they often contain predictable words or phrases.
+SHA-256 is one of the most widely-used cryptographic hash functions, and is considered unbroken at the time of this writing. This means that given a hash of a long and random string, an adversary can't recover that original string. However, secret keys produced by humans are not typically long, nor are they perfectly random. They often contain predictable words or phrases.
 
-One strategy for cracking passwords is to try hashing all English words, for example. This is called a *dictionary attack*. An attacker might even try to pre-compute the hashes of all English words and other common passwords. Then they could simple look up hashes in this hash table to crack them. The table in this attack is called a *rainbow table*.
+One strategy for cracking your secret key is to try hashing all English words, for example. This is called a *dictionary attack*. An attacker might even try to pre-compute the hashes of all English words and other common passwords. Then they could simple look up hashes in this hash table to crack them. The table in this attack is called a *rainbow table*.
 
-A common defense against these attacks is to add random bits to your password. This is called a *salt*, and it makes sure you don't use the same password as anyone else. Most security software will automatically add a salt to your password and store it. Since Hashpass doesn't store anything, it cannot add a salt for you. It is up to you to pick a password with enough [entropy](http://en.wikipedia.org/wiki/Password_strength#Entropy_as_a_measure_of_password_strength) to defend against dictionary attacks. Longer is better. More random is better. Don't use a single word. Definitely don't use `bananas`. Hashpass doesn't limit the size of your secret key—take advantage of this.
+A common defense against these attacks is to add random bits to your key. This is called a *salt*, and it ensures you don't use the same key as anyone else. Most security software will automatically add a salt to your key and store it. **Since Hashpass doesn't store anything, it cannot add a salt for you. It is up to you to pick a key with enough [entropy](http://en.wikipedia.org/wiki/Password_strength#Entropy_as_a_measure_of_password_strength) to defend against dictionary attacks.** Longer is better. More random is better. Don't use a single word. Definitely don't use `bananas`. Hashpass doesn't limit the size of your secret key—take advantage of this.
 
-A determined attacker might try *all* strings up to some length. This generally takes longer or requires more computational power, but it's not impossible. For example, a reasonably-equipped hacker might be able to compute a trillion hashes per second. There are about 839 quadrillion 10-character alphanumeric passwords. If passwords are only hashed once, a hacker can crack a random 10-character alphanumeric password in a little over four days, on average.
+A determined attacker might try *all* strings up to some length. This generally takes longer or requires more computational power, but it's not impossible. For example, a reasonably-equipped hacker might be able to compute a trillion hashes per second. There are about 839 quadrillion 10-character alphanumeric keys. If keys are only hashed once, a hacker can crack a random 10-character alphanumeric key in a little over four days, on average.
 
-This is called a *brute-force attack*, and it relies on an attacker being able to compute a large number of hashes very quickly. To provide resistance against such attacks, Hashpass applies the hashing function many times (`2^16`, to be exact). This makes testing a password take much longer. On average, our hacker now takes more than 800 years to crack a random 10-character alphanumeric password.
+This is called a *brute-force attack*, and it relies on an attacker being able to compute a large number of hashes very quickly. To provide resistance against such attacks, Hashpass applies the hashing function many times (`2^16` times, to be exact). This makes testing a key take much longer. On average, our hacker now takes more than 800 years to crack a random 10-character alphanumeric key.
+
+Even with `2^16` rounds of hashing, it takes our hacker only 30 seconds to crack a random 5-character alphanumeric key! **It is strongly advised that you pick a key with at least 10 characters.**
 
 ## Comparison with traditional password managers
 
@@ -62,7 +64,7 @@ Since Hashpass doesn't store passwords in a database, you have no chance of acci
 
 ## License
 
-Copyright (c) 2014 Stephan Boyer
+Copyright (c) 2015 Stephan Boyer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

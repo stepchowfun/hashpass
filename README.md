@@ -24,13 +24,7 @@ Hashpass generates a password based on your key and the current domain. Usually 
 
 ## How passwords are generated
 
-Suppose your secret key is `bananas`, and you're signing up for Facebook. Hashpass combines the current domain name and your secret key with a `/` as follows: `www.facebook.com/bananas`. It then computes the [SHA-256 hash](http://en.wikipedia.org/wiki/SHA-2) of that string. Then it hashes it again and again, `2^16` times in total. Finally, it outputs the first 96 bits of the result, encoded as 16 characters in [Base64](http://en.wikipedia.org/wiki/Base64). In this example, the final output is `sWwtmA9uA6X9SyXD`. We can verify this result using Python:
-
-    import hashlib, base64
-    bits = 'www.facebook.com/bananas'
-    for i in range(2 ** 16):
-      bits = hashlib.sha256(bits).digest()
-    print(base64.b64encode(bits)[:16]) # prints sWwtmA9uA6X9SyXD
+Suppose your secret key is `bananas`, and you're signing up for Facebook. Hashpass combines the current domain name and your secret key with a `/` as follows: `www.facebook.com/bananas`. It then computes the [SHA-256 hash](http://en.wikipedia.org/wiki/SHA-2) of that string. Then it hashes it again and again, `2^16` times in total. Finally, it outputs the first 96 bits of the result, encoded as 16 characters in [Base64](http://en.wikipedia.org/wiki/Base64). In this example, the final output is `sWwtmA9uA6X9SyXD`. This result can be reproduced using the Python script near the bottom of this document.
 
 ## Security
 
@@ -63,6 +57,23 @@ Since Hashpass doesn't store passwords in a database, you have no chance of acci
 - You don't have to use the same key for every service. But the point of Hashpass is that you can, provided your key is strong enough.
 
 - As with any good security software, Hashpass is open-source ([Github](https://github.com/boyers/hashpass)). It uses the [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/) to compute SHA-256.
+
+- The Hashpass scheme can be used for more than just websites. For other things, I use this Python script:
+
+    ```python
+    #!/usr/bin/python -O
+    import base64, getpass, hashlib
+
+    domain = raw_input('Domain: ')
+    key = getpass.getpass('Key: ')
+
+    bits = domain + '/' + key
+    for i in range(2 ** 16):
+      bits = hashlib.sha256(bits).digest()
+    password = base64.b64encode(bits)[:16]
+
+    print('Password: ' + password)
+    ```
 
 ## License
 

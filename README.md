@@ -64,7 +64,7 @@ Since Hashpass doesn't store passwords in a database, you have no chance of acci
     #!/usr/bin/python -O
     import base64, getpass, hashlib
 
-    domain = raw_input('Domain: ')
+    domain = raw_input('Domain: ').lower()
     key = getpass.getpass('Key: ')
 
     bits = domain + '/' + key

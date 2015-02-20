@@ -1,18 +1,21 @@
-"use strict";
+'use strict';
+
+// Make sure we are in strict mode.
+(function() {
+  var strictMode = false;
+  try {
+    NaN = NaN;
+  } catch (err) {
+    strictMode = true;
+  }
+  if (!strictMode) {
+    throw 'Unable to activate strict mode.';
+  }
+})();
 
 // The hashing difficulty.
 // 2 ^ difficulty rounds of SHA-256 will be computed.
 var difficulty = 16;
-
-// This fixes a bug in Chrome where the popup is not sized correctly.
-function fixSize() {
-  setInterval(function() {
-    var width = $('#container').width();
-    var height = $('#container').height();
-    $('#container').width(width);
-    $('#container').height(height);
-  }, 100);
-}
 
 $(function() {
   // Get the current tab.
@@ -20,13 +23,17 @@ $(function() {
       active: true,
       currentWindow: true
     }, function(tabs) {
+      var showError = function(err) {
+        $('#domain').text('N/A');
+        $('#key').prop('disabled', true);
+        $('#hash').prop('disabled', true);
+        $('p:not(#message)').addClass('disabled');
+        $('#message').addClass('error').text(err);
+      };
+
       // Make sure we got the tab.
       if (tabs.length !== 1) {
-        $('#controls').addClass('hidden');
-        $('#error').removeClass('hidden').text('Unable to determine active tab.');
-        $('#container').removeClass('hidden');
-        fixSize();
-        return;
+        return showError('Unable to determine active tab.');
       }
 
       // Get the domain.
@@ -36,19 +43,11 @@ $(function() {
         domain = matches[1].toLowerCase();
       } else {
         // Example cause: files served over the file:// protocol.
-        $('#controls').addClass('hidden');
-        $('#error').removeClass('hidden').text('Unable to determine the domain.');
-        $('#container').removeClass('hidden');
-        fixSize();
-        return;
+        return showError('Unable to determine the domain.');
       }
       if (/^http(?:s?):\/\/chrome\.google\.com\/webstore.*/.test(tabs[0].url)) {
         // Technical reason: Chrome prevents content scripts from running in the app gallery.
-        $('#controls').addClass('hidden');
-        $('#error').removeClass('hidden').text('Hashpass cannot run in the Chrome Web Store.');
-        $('#container').removeClass('hidden');
-        fixSize();
-        return;
+        return showError('Try Hashpass on another domain.');
       }
       $('#domain').text(domain);
 
@@ -63,15 +62,11 @@ $(function() {
             // Different user interfaces depending on whether a password field is in focus.
             var passwordMode = (response.type === 'password');
             if (passwordMode) {
-              $('.password-mode-off').addClass('hidden');
-              $('.password-mode-on').removeClass('hidden');
+              $('#message').html('Press <strong>ENTER</strong> to fill in the password field.');
+              $('#hash').val('[hidden]').addClass('disabled');
             } else {
-              $('.password-mode-off').removeClass('hidden');
-              $('.password-mode-on').addClass('hidden');
+              $('#message').html('<strong>TIP:</strong> Select a password field first.');
             }
-            $('#error').addClass('hidden');
-            $('#container').removeClass('hidden');
-            fixSize();
 
             // Called whenever the key changes.
             var update = function() {
@@ -85,7 +80,9 @@ $(function() {
               }
 
               var hash = sjcl.codec.base64.fromBits(bits).slice(0, 16);
-              $('#hash').val(hash);
+              if (!passwordMode) {
+                $('#hash').val(hash);
+              }
               return hash;
             };
 
@@ -99,7 +96,7 @@ $(function() {
                 update();
                 timeout = null;
               }), 100);
-            }
+            };
 
             if (passwordMode) {
               // Listen for the Enter key.

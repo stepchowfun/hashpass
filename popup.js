@@ -57,7 +57,7 @@ $(function() {
       }, function() {
         // Check if a password field is selected.
         chrome.tabs.sendMessage(tabs[0].id, {
-            type: 'check'
+            type: 'hashpassCheckIfPasswordField'
           }, function(response) {
             // Different user interfaces depending on whether a password field is in focus.
             var passwordMode = (response.type === 'password');
@@ -104,7 +104,7 @@ $(function() {
                 if (e.which === 13) {
                   // Try to fill the selected password field with the hash.
                   chrome.tabs.sendMessage(tabs[0].id, {
-                      type: 'fill',
+                      type: 'hashpassFillPasswordField',
                       hash: update()
                     }, function(response) {
                       // If successful, close the popup.

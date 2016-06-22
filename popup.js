@@ -73,7 +73,7 @@ $(function() {
             var update = function() {
               // Compute the first 16 base64 characters of iterated-SHA-256(domain + '/' + key, 2 ^ difficulty).
               var key = $('#key').val();
-              domain = $('#domain').val();
+              domain = $('#domain').val().replace(/^\s+|\s+$/g, '').toLowerCase();
 
               var rounds = Math.pow(2, difficulty);
               var bits = domain + '/' + key;

@@ -24,7 +24,8 @@ $(function() {
       currentWindow: true
     }, function(tabs) {
       var showError = function(err) {
-        $('#domain').text('N/A');
+        $('#domain').val('N/A').addClass('disabled');
+        $('#domain').prop('disabled', true);
         $('#key').prop('disabled', true);
         $('#hash').prop('disabled', true);
         $('p:not(#message)').addClass('disabled');
@@ -49,7 +50,7 @@ $(function() {
         // Technical reason: Chrome prevents content scripts from running in the app gallery.
         return showError('Try Hashpass on another domain.');
       }
-      $('#domain').text(domain);
+      $('#domain').val(domain);
 
       // Run the content script to register the message handler.
       chrome.tabs.executeScript(tabs[0].id, {
@@ -72,6 +73,7 @@ $(function() {
             var update = function() {
               // Compute the first 16 base64 characters of iterated-SHA-256(domain + '/' + key, 2 ^ difficulty).
               var key = $('#key').val();
+              domain = $('#domain').val();
 
               var rounds = Math.pow(2, difficulty);
               var bits = domain + '/' + key;
@@ -119,7 +121,8 @@ $(function() {
 
             if (!passwordMode) {
               // Register the update handler.
-              $('#key').bind('propertychange change click keyup input paste', debouncedUpdate);
+              $('#domain').bind('propertychange change keyup input paste', debouncedUpdate);
+              $('#key').bind('propertychange change keyup input paste', debouncedUpdate);
             }
 
             // Update the hash right away.

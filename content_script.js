@@ -17,12 +17,24 @@
 if (!window.hashpassLoaded) {
   window.hashpassLoaded = true;
 
+  // Stores a document inside of which activeElement is located.
+  var activeDocument = document;
+
   // Register the message handler.
   chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       // Trims the attribute and converts it to lowercase.
       var normalizeAttr = function(attr) {
         return attr.replace(/^\s+|\s+$/g, '').toLowerCase();
+      };
+
+      // Checks if activeElement is inside iframe or not and returns correct document.
+      var getActiveDocument = function() {
+        var elem = document.activeElement;
+        if (normalizeAttr(elem.tagName) === normalizeAttr('iframe')) {
+          return elem.contentDocument;
+        }
+        return document;
       };
 
       // Returns whether elem is an input of type "password".
@@ -39,7 +51,8 @@ if (!window.hashpassLoaded) {
 
       // Check if a password field is selected.
       if (request.type === 'hashpassCheckIfPasswordField') {
-        if (isPasswordInput(document.activeElement)) {
+        activeDocument = getActiveDocument();
+        if (isPasswordInput(activeDocument.activeElement)) {
           sendResponse({ type: 'password' });
           return;
         }
@@ -49,8 +62,8 @@ if (!window.hashpassLoaded) {
 
       // Fill in the selected password field.
       if (request.type === 'hashpassFillPasswordField') {
-        if (isPasswordInput(document.activeElement)) {
-          document.activeElement.value = request.hash;
+        if (isPasswordInput(activeDocument.activeElement)) {
+          activeDocument.activeElement.value = request.hash;
           sendResponse({ type: 'close' });
           return;
         }

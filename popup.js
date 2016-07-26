@@ -123,10 +123,9 @@ $(function() {
               // Register the update handler.
               $('#domain').bind('propertychange change keyup input paste', debouncedUpdate);
               $('#key').bind('propertychange change keyup input paste', debouncedUpdate);
+              // Update the hash right away.
+              debouncedUpdate();
             }
-
-            // Update the hash right away.
-            debouncedUpdate();
 
             // Focus the text field.
             $('#key').focus();

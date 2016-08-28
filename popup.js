@@ -102,7 +102,7 @@ $(function() {
 
             if (passwordMode) {
               // Listen for the Enter key.
-              $('#key').keydown(function(e) {
+              $('#domain, #key').keydown(function(e) {
                 if (e.which === 13) {
                   // Try to fill the selected password field with the hash.
                   chrome.tabs.sendMessage(tabs[0].id, {
@@ -121,8 +121,8 @@ $(function() {
 
             if (!passwordMode) {
               // Register the update handler.
-              $('#domain').bind('propertychange change keyup input paste', debouncedUpdate);
-              $('#key').bind('propertychange change keyup input paste', debouncedUpdate);
+              $('#domain, #key').bind('propertychange change keyup input paste', debouncedUpdate);
+
               // Update the hash right away.
               debouncedUpdate();
             }

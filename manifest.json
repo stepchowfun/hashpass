@@ -3,7 +3,7 @@
 
   "name": "Hashpass",
   "description": "A simple, stateless password manager.",
-  "version": "1.9.6",
+  "version": "1.9.7",
   "permissions": [
     "activeTab"
   ],

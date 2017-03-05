@@ -39,7 +39,7 @@ $(function() {
 
       // Get the domain.
       var domain = null;
-      var matches = tabs[0].url.match(/^http(?:s?):\/\/([^/]*)/);
+      var matches = tabs[0].url.match(/^http(?:s?):\/\/[^\/\.]*.([^/]*)/);
       if (matches) {
         domain = matches[1].toLowerCase();
       } else {

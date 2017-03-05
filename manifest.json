@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
 
-  "name": "Hashpass",
-  "description": "A simple, stateless password manager.",
-  "version": "1.9.7",
+  "name": "HashpassAdvanced",
+  "description": "An advanced version of the Hashpass password manager.",
+  "version": "1.9.8",
   "permissions": [
     "activeTab"
   ],

@@ -39,9 +39,9 @@ $(function() {
 
       // Get the domain.
       var domain = null;
-      var matches = tabs[0].url.match(/^http(?:s?):\/\/[^\/\.]*.([^/]*)/);
-      if (matches) {
-        domain = matches[1].toLowerCase();
+      var this_url = tabs[0].url
+      if (tld.isValid(this_url)) {
+        domain = tld.getDomain(this_url);
       } else {
         // Example cause: files served over the file:// protocol.
         return showError('Unable to determine the domain.');

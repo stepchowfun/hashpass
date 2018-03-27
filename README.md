@@ -10,7 +10,13 @@ A key feature of Hashpass is that it's stateless. Hashpass never writes to the f
 
 Install Hashpass from the Chrome App Store ([link](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)). You will then see the Hashpass button next to your address bar.
 
-There is also a compatible Android app, courtesy of [Erik Byström](http://blog.slackers.se/). It is available on the Google Play Store ([link](https://play.google.com/store/apps/details?id=se.slackers.hashpass)). The source is available [here](https://github.com/bysse/hashpass-android).
+## Compatible implementations
+
+In addition to the Chrome extension, there are a few other implementations:
+
+* There is a compatible Android app, courtesy of [Erik Byström](http://blog.slackers.se/). It is available on the Google Play Store ([link](https://play.google.com/store/apps/details?id=se.slackers.hashpass)). The source is available [here](https://github.com/bysse/hashpass-android).
+* There is a command-line client written in Go, courtesy of [Pablo Ovelleiro](https://github.com/binaryplease). The source is available [here](https://github.com/binaryplease/go-hashpass).
+* There is a small Python implementation below.
 
 ## A quick tour
 
@@ -77,7 +83,7 @@ Since Hashpass doesn't store passwords in a database, you have no chance of acci
 
 ## License
 
-Copyright (c) 2016 Stephan Boyer
+Copyright (c) 2018 Stephan Boyer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

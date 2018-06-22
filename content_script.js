@@ -52,7 +52,7 @@ if (!window.hashpassLoaded) {
       // Check if a password field is selected.
       if (request.type === 'hashpassCheckIfPasswordField') {
         activeDocument = getActiveDocument();
-        if (isPasswordInput(activeDocument.activeElement)) {
+        if (activeDocument && isPasswordInput(activeDocument.activeElement)) {
           sendResponse({ type: 'password' });
           return;
         }

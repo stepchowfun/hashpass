@@ -22,11 +22,11 @@ In addition to the Chrome extension, there are a few other implementations:
 
 Click the Hashpass button and this will pop up:
 
-![Screenshot](https://raw.githubusercontent.com/boyers/hashpass/master/screenshot1.png)
+![Screenshot](https://raw.githubusercontent.com/stepchowfun/hashpass/main/screenshot1.png)
 
 Hashpass generates a password based on your key and the current domain. Usually you will want to select a password field first. Then Hashpass doesn't show the generated password, giving you the option to fill in the field instead:
 
-![Screenshot](https://raw.githubusercontent.com/boyers/hashpass/master/screenshot2.png)
+![Screenshot](https://raw.githubusercontent.com/stepchowfun/hashpass/main/screenshot2.png)
 
 ## How passwords are generated
 
@@ -62,7 +62,7 @@ Since Hashpass doesn't store passwords in a database, you have no chance of acci
 
 - You don't have to use the same key for every service. But the point of Hashpass is that you can, provided your key is strong enough.
 
-- As with any good security software, Hashpass is open-source ([Github](https://github.com/boyers/hashpass)). It uses the [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/) to compute SHA-256.
+- As with any good security software, Hashpass is open-source ([Github](https://github.com/stepchowfun/hashpass)). It uses the [Stanford Javascript Crypto Library](http://bitwiseshiftleft.github.io/sjcl/) to compute SHA-256.
 
 - The Hashpass scheme can be used for more than just websites. For other things, I use this Python script:
 

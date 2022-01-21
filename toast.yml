@@ -1,0 +1,121 @@
+image: ubuntu:20.04
+default: check
+user: user
+command_prefix: |
+  # Make Bash not silently ignore errors.
+  set -euo pipefail
+tasks:
+  install_packages:
+    description: Install system packages.
+    user: root
+    command: |
+      # Install the following packages:
+      #
+      # - curl    - Used for installing Tagref
+      # - ripgrep - Used for various linting tasks
+      # - zip     - Used for producing the production release
+      apt-get update
+      apt-get install --yes curl ripgrep zip
+
+      # Install the following packages:
+      #
+      # - nodejs - Used to build the extension.
+      curl -LSs https://deb.nodesource.com/setup_16.x | bash -
+      apt-get update
+      apt-get install --yes nodejs
+
+  install_tagref:
+    description: Install Tagref, a reference checking tool.
+    dependencies:
+      - install_packages
+    user: root
+    command: |
+      # Install Tagref using the official installer script.
+      curl https://raw.githubusercontent.com/stepchowfun/tagref/main/install.sh -LSfs | sh
+
+  create_user:
+    description: Create a user who doesn't have root privileges.
+    user: root
+    command: |
+      # Create a user named `user` with a home directory.
+      adduser --disabled-password --gecos '' user
+
+  install_tools:
+    description: Install the tools needed to build and validate the extension.
+    dependencies:
+      - install_tagref
+      - create_user
+
+  repository:
+    description: Import the repository.
+    dependencies:
+      - install_tools
+    input_paths:
+      - .
+    excluded_input_paths:
+      - .git
+
+      # [tag:excluded_input_paths] Keep this in sync with [ref:gitignore].
+      - dist/
+      - generated/
+      - hashpass.zip
+      - node_modules/
+
+  build:
+    description: Build the extension.
+    dependencies:
+      - repository
+    input_paths:
+      - src
+    command: |
+      # Build the extension.
+      npm ci
+      npm run build-production # [tag:build_production]
+
+  check:
+    description: Run the tests and linters.
+    dependencies:
+      - build
+    command: |
+      # Validate the source code.
+      npm run check
+
+      # Check references with Tagref.
+      tagref
+
+      # Enforce that lines span no more than 100 columns.
+      if rg --line-number --type ts '.{101}' src; then
+        echo 'There are lines spanning more than 100 columns.' >&2
+        exit 1
+      fi
+
+  release:
+    description: Build the production release.
+    dependencies:
+      - check # [ref:build_production]
+    input_paths:
+      - images
+      - index.html
+      - manifest.json
+    output_paths:
+      - hashpass.zip
+    command: |
+      # Create a ZIP file containing the relevant files.
+      zip -r hashpass.zip \
+        HEROICONS-LICENSE.md \
+        LICENSE.md \
+        dist \
+        images \
+        index.html \
+        manifest.json \
+        src
+
+  format:
+    description: Format the source code.
+    dependencies:
+      - build
+    output_paths:
+      - src
+    command: |
+      # Format the source code.
+      npm run format

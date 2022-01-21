@@ -1,24 +1,30 @@
 {
-  "manifest_version": 2,
-
   "name": "Hashpass",
   "description": "A simple, stateless password manager.",
-  "version": "1.9.8",
-  "permissions": [
-    "activeTab"
-  ],
-  "browser_action": {
+  "version": "2.0.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "index.html",
     "default_icon": {
-      "19":  "icon.png",
-      "38":  "icon.png",
-      "128": "icon.png"
-    },
-    "default_popup": "popup.html"
-  },
-  "icons":
-    {
-      "19":  "icon.png",
-      "38":  "icon.png",
-      "128": "icon.png"
+      "16": "images/icon.png",
+      "32": "images/icon.png",
+      "48": "images/icon.png",
+      "128": "images/icon.png"
     }
+  },
+  "icons": {
+    "16": "images/icon.png",
+    "32": "images/icon.png",
+    "48": "images/icon.png",
+    "128": "images/icon.png"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P"
+      },
+      "description": "Opens Hashpass"
+    }
+  }
 }

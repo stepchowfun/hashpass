@@ -1,5 +1,7 @@
 # Hashpass
 
+[![Build status](https://github.com/stepchowfun/hashpass/workflows/Continuous%20integration/badge.svg?branch=main)](https://github.com/stepchowfun/hashpass/actions?query=branch%3Amain)
+
 [Hashpass](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)
 is a password manager which doesn't store any passwords. Instead, it generates
 passwords using a cryptographic hash function based on the domain of the website
@@ -9,7 +11,7 @@ scheme, you get (a) the security of having a unique password for each website,
 from having to sync your passwords across your devices, and (d) the comfort of
 knowing that neither you nor any cloud provider can lose your passwords.
 
-![Screenshot](https://raw.githubusercontent.com/stepchowfun/hashpass/main/screenshot3.png)
+![Screenshot](https://github.com/stepchowfun/hashpass/blob/main/images/screenshot3.png)
 
 ## Installation
 

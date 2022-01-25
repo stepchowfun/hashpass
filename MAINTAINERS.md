@@ -24,10 +24,8 @@ Follow these steps to release a new version:
 1. Bump the version in `manifest.json` and `package.json`, run `npm install` to
    update `package-lock.json`, and update `CHANGELOG.md` with information about
    the new version. Ship those changes as a single commit.
-2. Run `npm ci && npm run build-production && npm run check` to build the
-   extension.
-3. Create a ZIP file of the whole repository, including the `dist` directory
-   generated in the previous step.
-4. Upload the ZIP file to the
+2. Run `toast release` to build the extension. It will produce a file called
+   `hashpass.zip`.
+3. Upload the ZIP file to the
    [Chrome Developer Dashboard](https://chrome.google.com/webstore/devconsole/)
    and publish the new version.

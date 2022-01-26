@@ -20,6 +20,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react/all',
+    'plugin:react-hooks/recommended',
     'plugin:jest/all',
     'prettier',
   ],

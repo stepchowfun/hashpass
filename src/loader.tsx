@@ -22,12 +22,7 @@ const Loader = (): React.ReactElement => {
         setIsPasswordFieldActive(await getIsPasswordFieldActive());
       })(),
     );
-  }, [
-    setDomain,
-    getDomain,
-    setIsPasswordFieldActive,
-    getIsPasswordFieldActive,
-  ]);
+  }, []);
 
   if (domain === null || isPasswordFieldActive === null) {
     return (

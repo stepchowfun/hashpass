@@ -5,9 +5,9 @@ import { useEffect, useCallback, useMemo, useRef, useState } from 'react';
 
 import Button from './button';
 import Input from './input';
+import fillInPassword from './fill-in-password';
 import fireAndForget from './fire-and-forget';
-import hashpass from './hashpass';
-import submitGeneratedPassword from './submit-generated-password';
+import { flush, hashpass } from './worker-client';
 
 const debounceMilliseconds = 200;
 
@@ -19,7 +19,8 @@ const useStyles = createUseStyles({
 
 // Do to the way React hooks work, it is not always possible to get the latest version of the state.
 // So whenever we update the generated password, we also store it in this variable so it can be
-// retrieved immediately.
+// retrieved immediately. This global mutable state unfortunately implies there cannot exist
+// multiple `UserInterface`s at the same time.
 let synchronousGeneratedPassword = '';
 
 const UserInterface = ({
@@ -41,11 +42,15 @@ const UserInterface = ({
   const updateGeneratedPassword = useMemo(
     () =>
       debounce((newDomain: string, newUniversalPassword: string) => {
-        synchronousGeneratedPassword = hashpass(
-          newDomain,
-          newUniversalPassword,
+        fireAndForget(
+          (async (): Promise<void> => {
+            synchronousGeneratedPassword = await hashpass(
+              newDomain,
+              newUniversalPassword,
+            );
+            setGeneratedPassword(synchronousGeneratedPassword);
+          })(),
         );
-        setGeneratedPassword(synchronousGeneratedPassword);
       }, debounceMilliseconds),
     [setGeneratedPassword],
   );
@@ -56,11 +61,11 @@ const UserInterface = ({
     if (inputElement !== null) {
       inputElement.focus();
     }
-  }, []);
+  }, [universalPasswordRef]);
 
   useEffect(() => {
     updateGeneratedPassword(domain, universalPassword);
-  }, [domain, universalPassword]);
+  }, [updateGeneratedPassword, domain, universalPassword]);
 
   const onResetDomain = useCallback((): void => {
     setDomain(initialDomain);
@@ -70,7 +75,7 @@ const UserInterface = ({
     if (inputElement !== null) {
       inputElement.focus();
     }
-  }, [setDomain, initialDomain]);
+  }, [setDomain, initialDomain, universalPasswordRef]);
 
   const onToggleUniversalPasswordHidden = useCallback((): void => {
     setIsUniversalPasswordHidden(!isUniversalPasswordHidden);
@@ -80,14 +85,23 @@ const UserInterface = ({
     if (inputElement !== null) {
       inputElement.focus();
     }
-  }, [setIsUniversalPasswordHidden, isUniversalPasswordHidden]);
+  }, [
+    setIsUniversalPasswordHidden,
+    isUniversalPasswordHidden,
+    universalPasswordRef,
+  ]);
 
   const onCopyGeneratedPasswordToClipboard = useCallback((): void => {
     updateGeneratedPassword.flush();
 
     // If writing to the clipboard fails, just log the error and continue.
-    fireAndForget(navigator.clipboard.writeText(synchronousGeneratedPassword));
-  }, [updateGeneratedPassword, synchronousGeneratedPassword]);
+    fireAndForget(
+      (async (): Promise<void> => {
+        await flush();
+        await navigator.clipboard.writeText(synchronousGeneratedPassword);
+      })(),
+    );
+  }, [updateGeneratedPassword]);
 
   const onToggleGeneratedPasswordHidden = useCallback((): void => {
     setIsGeneratedPasswordHidden(!isGeneratedPasswordHidden);
@@ -100,16 +114,16 @@ const UserInterface = ({
 
       updateGeneratedPassword.flush();
 
-      // If filling out the password field and submitting the form fails, just log the error and
-      // continue.
+      // If filling out the password field fails, just log the error and continue.
       fireAndForget(
         (async (): Promise<void> => {
-          await submitGeneratedPassword(synchronousGeneratedPassword);
+          await flush();
+          await fillInPassword(synchronousGeneratedPassword);
           window.close();
         })(),
       );
     },
-    [updateGeneratedPassword, synchronousGeneratedPassword],
+    [updateGeneratedPassword],
   );
 
   return (

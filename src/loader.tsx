@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
 
-import Message from './message';
+import Notice from './notice';
 import UserInterface from './user-interface';
 import fireAndForget from './fire-and-forget';
 import getDomain from './get-domain';
@@ -22,18 +22,23 @@ const Loader = (): React.ReactElement => {
         setIsPasswordFieldActive(await getIsPasswordFieldActive());
       })(),
     );
-  }, []);
+  }, [
+    setDomain,
+    getDomain,
+    setIsPasswordFieldActive,
+    getIsPasswordFieldActive,
+  ]);
 
   if (domain === null || isPasswordFieldActive === null) {
     return (
-      <Message isError>
+      <Notice isError>
         Hashpass is blocked on this page. Try again on another website.
-      </Message>
+      </Notice>
     );
   }
 
   if (domain === undefined || isPasswordFieldActive === undefined) {
-    return <Message isError={false}>Loading…</Message>;
+    return <Notice isError={false}>Loading…</Notice>;
   }
 
   return (

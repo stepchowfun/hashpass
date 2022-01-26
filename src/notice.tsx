@@ -4,7 +4,7 @@ import { createUseStyles } from 'react-jss';
 const width = '320px';
 
 const useStyles = createUseStyles({
-  message: {
+  notice: {
     width,
     margin: '16px',
     fontSize: '16px',
@@ -13,7 +13,7 @@ const useStyles = createUseStyles({
   },
 });
 
-const Message = ({
+const Notice = ({
   isError,
   children,
 }: {
@@ -22,7 +22,7 @@ const Message = ({
 }): React.ReactElement => {
   const classes = useStyles(isError);
 
-  return <div className={classes.message}>{children}</div>;
+  return <div className={classes.notice}>{children}</div>;
 };
 
-export default Message;
+export default Notice;

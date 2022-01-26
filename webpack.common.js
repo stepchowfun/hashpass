@@ -1,7 +1,10 @@
 const path = require('path');
 
 module.exports = {
-  entry: './src/main.tsx',
+  entry: {
+    main: './src/main.tsx',
+    worker: './src/worker.ts',
+  },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
   },
@@ -18,7 +21,7 @@ module.exports = {
     ],
   },
   output: {
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 };

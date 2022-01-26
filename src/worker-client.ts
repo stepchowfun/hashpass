@@ -7,26 +7,15 @@ const worker = new Worker('/dist/worker.bundle.js');
 let nextMessageId = 0;
 
 // Keep track of all in-flight requests so we know what to do with the corresponding responses.
-let hashpassRequests: Record<number, (generatedPassword: string) => void> = {};
-
-// Keep track of all in-flight requests to flush so we can return control back to those callers.
-let flushRequests: (() => void)[] = [];
+let requests: Record<number, (generatedPassword: string) => void> = {};
 
 // This is the handler for incoming responses.
 worker.onmessage = (event: MessageEvent<Response>) => {
-  hashpassRequests[event.data.messageId](event.data.generatedPassword);
-  delete hashpassRequests[event.data.messageId];
-
-  if (Object.keys(hashpassRequests).length === 0) {
-    for (let flushRequest of flushRequests) {
-      flushRequest();
-    }
-
-    flushRequests = [];
-  }
+  requests[event.data.messageId](event.data.generatedPassword);
+  delete requests[event.data.messageId];
 };
 
-export function hashpass(
+export default function hashpass(
   domain: string,
   universalPassword: string,
 ): Promise<string> {
@@ -37,20 +26,10 @@ export function hashpass(
       universalPassword,
     };
 
-    hashpassRequests[nextMessageId] = resolve;
+    requests[nextMessageId] = resolve;
 
     worker.postMessage(request);
 
     nextMessageId = (nextMessageId + 1) % Number.MAX_SAFE_INTEGER;
-  });
-}
-
-export function flush(): Promise<void> {
-  return new Promise((resolve, reject) => {
-    if (Object.keys(hashpassRequests).length === 0) {
-      resolve();
-    } else {
-      flushRequests.push(resolve);
-    }
   });
 }

@@ -4,10 +4,10 @@
 
 [Hashpass](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)
 is a password manager which doesn't store any passwords. Instead, it generates
-site-specific passwords using a
+passwords on the fly using a
 [cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function)
-using the domain of the website you're visiting and a single universal password
-that you memorize. With this, you get:
+of the domain of the website you're visiting and a single universal password
+that you memorize. This gives you:
 
 - the security of having a unique password for each website,
 - the convenience of only having to memorize one password,

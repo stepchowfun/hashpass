@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.1] - 2022-01-26
+
+### Changed
+
+- Hashpass now works even if it does not have access to the current tab, even
+  thouhg in that case some functionality is limited. In particular, it cannot
+  automatically determine the domain or fill in the password field.
+
 ## [2.1.0] - 2022-01-25
 
 ### Fixed

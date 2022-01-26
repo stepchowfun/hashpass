@@ -21,11 +21,12 @@ const UserInterface = ({
   initialDomain,
   isPasswordFieldActive,
 }: {
-  initialDomain: string;
-  isPasswordFieldActive: boolean;
+  initialDomain: string | null;
+  isPasswordFieldActive: boolean | null;
 }): React.ReactElement => {
   const classes = useStyles();
-  const [domain, setDomain] = useState(initialDomain);
+  const initialDomainOrEmpty = initialDomain === null ? '' : initialDomain;
+  const [domain, setDomain] = useState(initialDomainOrEmpty);
   const [universalPassword, setUniversalPassword] = useState('');
   const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] =
     useState(true);
@@ -71,14 +72,14 @@ const UserInterface = ({
   }, [updateGeneratedPassword, domain, universalPassword]);
 
   const onResetDomain = useCallback((): void => {
-    setDomain(initialDomain);
+    setDomain(initialDomainOrEmpty);
 
     const inputElement = universalPasswordRef.current;
 
     if (inputElement !== null) {
       inputElement.focus();
     }
-  }, [initialDomain]);
+  }, [initialDomainOrEmpty]);
 
   const onToggleUniversalPasswordHidden = useCallback((): void => {
     setIsUniversalPasswordHidden(!isUniversalPasswordHidden);
@@ -133,19 +134,23 @@ const UserInterface = ({
   return (
     <form onSubmit={onFormSubmit}>
       <Input
-        buttons={[
-          <Button
-            description="Reset the domain."
-            imageName="refresh"
-            key="refresh"
-            onClick={onResetDomain}
-          />,
-        ]}
+        buttons={
+          initialDomain === null
+            ? []
+            : [
+                <Button
+                  description="Reset the domain."
+                  imageName="refresh"
+                  key="refresh"
+                  onClick={onResetDomain}
+                />,
+              ]
+        }
         disabled={false}
         hideValue={false}
         label="Domain"
         onChange={setDomain}
-        placeholder="www.example.com"
+        placeholder="example.com"
         updating={false}
         value={domain}
       />
@@ -173,7 +178,7 @@ const UserInterface = ({
       />
       <Input
         buttons={[
-          ...(isPasswordFieldActive
+          ...(isPasswordFieldActive === true
             ? [
                 <Button
                   description={`Fill in the password field on ${domain} and close Hashpass.`}

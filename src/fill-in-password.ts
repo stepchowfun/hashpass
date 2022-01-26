@@ -1,6 +1,6 @@
 import execute from './execute';
 
-export default async function submitGeneratedPassword(
+export default async function fillInPassword(
   generatedPassword: string,
 ): Promise<undefined | null> {
   return await execute((generatedPassword: string) => {

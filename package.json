@@ -1,6 +1,6 @@
 {
   "name": "hashpass",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "scripts": {
     "build-production": "rm -rf dist && webpack --config webpack.production.js",
     "build-development": "rm -rf dist && webpack --config webpack.development.js",

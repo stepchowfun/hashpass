@@ -5,6 +5,11 @@ import { useMemo } from 'react';
 const labelHeight = '20px';
 const inputHeight = '28px';
 
+interface InputStyleArgs {
+  disabled: boolean;
+  updating: boolean;
+}
+
 const useStyles = createUseStyles({
   container: {
     display: 'flow-root', // Create a block formatting context to contain margins of descendants.
@@ -16,9 +21,11 @@ const useStyles = createUseStyles({
     borderRadius: '8px',
     cursor: 'text',
     '&:focus-within': {
-      border: (disabled: boolean) =>
-        disabled ? undefined : '2px solid #56b8ff',
+      border: ({ disabled }: InputStyleArgs) =>
+        disabled ? '2px solid #cccccc' : '2px solid #56b8ff',
     },
+    background: ({ updating }: InputStyleArgs) =>
+      updating ? '#fafafa' : 'transparent',
   },
   label: {
     width: '200px',
@@ -31,7 +38,7 @@ const useStyles = createUseStyles({
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
-    cursor: (disabled: boolean) => (disabled ? 'default' : undefined),
+    cursor: ({ disabled }: InputStyleArgs) => (disabled ? 'default' : 'text'),
     userSelect: 'none',
   },
   input: {
@@ -71,6 +78,7 @@ const Input = React.forwardRef(
       label,
       onChange,
       placeholder,
+      updating,
       value,
     }: {
       buttons: React.ReactChild[];
@@ -79,11 +87,12 @@ const Input = React.forwardRef(
       label: React.ReactChild;
       onChange: ((value: string) => void) | null;
       placeholder: string;
+      updating: boolean;
       value: string;
     },
     ref: React.ForwardedRef<HTMLInputElement>,
   ): React.ReactElement => {
-    const classes = useStyles(disabled);
+    const classes = useStyles({ disabled, updating });
     const newOnChange = useMemo(
       () =>
         (event: React.FormEvent<HTMLInputElement>): void => {

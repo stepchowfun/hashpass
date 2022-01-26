@@ -110,6 +110,9 @@ tasks:
         manifest.json \
         src
 
+      # Inform the user of where the artifact is.
+      echo 'Generated `hashpass.zip`.'
+
   format:
     description: Format the source code.
     dependencies:

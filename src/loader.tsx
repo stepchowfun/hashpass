@@ -14,8 +14,9 @@ const Loader = (): React.ReactElement => {
   >(undefined);
 
   useEffect(() => {
-    // This promise is supposed to be infallible, since these functions return `null` to signal
-    // errors. So we don't have any special logic for displaying exceptions in the user interface.
+    // This promise is supposed to be infallible. These functions return `null` to signal errors,
+    // and we handle that below. So we don't have any special logic here for reporting exceptions in
+    // the user interface.
     fireAndForget(
       (async (): Promise<void> => {
         setDomain(await getDomain());

@@ -7,7 +7,7 @@ import Button from './button';
 import Input from './input';
 import fillInPassword from './fill-in-password';
 import fireAndForget from './fire-and-forget';
-import { flush, hashpass } from './worker-client';
+import hashpass from './worker-client';
 
 const debounceMilliseconds = 200;
 
@@ -16,12 +16,6 @@ const useStyles = createUseStyles({
     color: '#666666',
   },
 });
-
-// Do to the way React hooks work, it is not always possible to get the latest version of the state.
-// So whenever we update the generated password, we also store it in this variable so it can be
-// retrieved immediately. This global mutable state unfortunately implies there cannot exist
-// multiple `UserInterface`s at the same time.
-let synchronousGeneratedPassword = '';
 
 const UserInterface = ({
   initialDomain,
@@ -39,36 +33,25 @@ const UserInterface = ({
   const [isGeneratedPasswordHidden, setIsGeneratedPasswordHidden] =
     useState(true);
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Start with 0 tasks in progress.
-  const [tasksInProgress, setTasksInProgress] = useState(0);
-  const incrementTasksInProgress = (): void => {
-    setTasksInProgress(
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Increment = +1.
-      (previousTasksInProgress) => previousTasksInProgress + 1,
-    );
-  };
-  const decrementTasksInProgress = (): void => {
-    setTasksInProgress(
-      // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Decrement = -1.
-      (previousTasksInProgress) => previousTasksInProgress - 1,
-    );
-  };
+  const [updatesInProgress, setUpdatesInProgress] = useState(0);
+  const [pendingCopyToClipboard, setPendingCopyToClipboard] = useState(false);
+  const [pendingFillInPassword, setPendingFillInPassword] = useState(false);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- We need to debounce this function.
   const updateGeneratedPassword = useCallback(
     debounce((newDomain: string, newUniversalPassword: string) => {
+      setUpdatesInProgress(
+        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Increment = +1.
+        (previousTasksInProgress) => previousTasksInProgress + 1,
+      );
       fireAndForget(
         (async (): Promise<void> => {
-          incrementTasksInProgress();
-          try {
-            synchronousGeneratedPassword = await hashpass(
-              newDomain,
-              newUniversalPassword,
-            );
-            setGeneratedPassword(synchronousGeneratedPassword);
-          } finally {
-            decrementTasksInProgress();
-          }
+          setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
+          setUpdatesInProgress(
+            // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Decrement = -1.
+            (previousTasksInProgress) => previousTasksInProgress - 1,
+          );
         })(),
       );
     }, debounceMilliseconds),
@@ -108,20 +91,8 @@ const UserInterface = ({
   }, [isUniversalPasswordHidden]);
 
   const onCopyGeneratedPasswordToClipboard = useCallback((): void => {
-    incrementTasksInProgress();
     updateGeneratedPassword.flush();
-
-    // If writing to the clipboard fails, just log the error and continue.
-    fireAndForget(
-      (async (): Promise<void> => {
-        try {
-          await flush();
-          await navigator.clipboard.writeText(synchronousGeneratedPassword);
-        } finally {
-          decrementTasksInProgress();
-        }
-      })(),
-    );
+    setPendingCopyToClipboard(true);
   }, [updateGeneratedPassword]);
 
   const onToggleGeneratedPasswordHidden = useCallback((): void => {
@@ -133,24 +104,31 @@ const UserInterface = ({
       event.preventDefault();
       event.stopPropagation();
 
-      incrementTasksInProgress();
       updateGeneratedPassword.flush();
-
-      // If filling out the password field fails, just log the error and continue.
-      fireAndForget(
-        (async (): Promise<void> => {
-          try {
-            await flush();
-            await fillInPassword(synchronousGeneratedPassword);
-          } finally {
-            decrementTasksInProgress();
-          }
-          window.close();
-        })(),
-      );
+      setPendingFillInPassword(true);
     },
     [updateGeneratedPassword],
   );
+
+  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- No tasks in progress?
+  if (updatesInProgress === 0) {
+    if (pendingCopyToClipboard) {
+      setPendingCopyToClipboard(false);
+
+      fireAndForget(navigator.clipboard.writeText(generatedPassword));
+    }
+
+    if (pendingFillInPassword) {
+      setPendingFillInPassword(false);
+
+      fireAndForget(
+        (async (): Promise<void> => {
+          await fillInPassword(generatedPassword);
+          window.close();
+        })(),
+      );
+    }
+  }
 
   return (
     <form onSubmit={onFormSubmit}>
@@ -236,7 +214,7 @@ const UserInterface = ({
         onChange={null}
         placeholder=""
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Any tasks in progress?
-        updating={tasksInProgress !== 0}
+        updating={updatesInProgress !== 0}
         value={generatedPassword}
       />
     </form>

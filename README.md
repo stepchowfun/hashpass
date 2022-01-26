@@ -4,12 +4,14 @@
 
 [Hashpass](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)
 is a password manager which doesn't store any passwords. Instead, it generates
-passwords using a cryptographic hash function based on the domain of the website
-you're visiting and a single password that you memorize. With this simple
-scheme, you get (a) the security of having a unique password for each website,
-(b) the convenience of only having to memorize one password, (c) the freedom
-from having to sync your passwords across your devices, and (d) the comfort of
-knowing that neither you nor any cloud provider can lose your passwords.
+passwords using a
+[cryptographic hash function](https://en.wikipedia.org/wiki/Cryptographic_hash_function)
+based on the domain of the website you're visiting and a single password that
+you memorize. With this simple scheme, you get (a) the security of having a
+unique password for each website, (b) the convenience of only having to memorize
+one password, (c) the freedom from having to sync your passwords across your
+devices, and (d) the comfort of knowing that neither you nor any cloud provider
+can lose your passwords.
 
 ![Screenshot](https://github.com/stepchowfun/hashpass/blob/main/images/screenshot3.png)
 

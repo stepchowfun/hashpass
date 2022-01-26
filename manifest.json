@@ -1,6 +1,6 @@
 {
   "name": "Hashpass",
-  "description": "A simple, stateless password manager.",
+  "description": "A simple password manager with a twist.",
   "version": "2.1.0",
   "manifest_version": 3,
   "permissions": ["activeTab", "scripting"],

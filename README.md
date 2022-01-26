@@ -19,8 +19,8 @@ that you memorize. This gives you:
 
 ## How it works
 
-To use Hashpass, you need to decide on a _universal password_. That's the only
-password you need to memorize, so make it a good one.
+First, you decide on a _universal password_. That's the only password you need
+to memorize, so make it a good one.
 
 Suppose your universal password is `correcthorsebatterystaple`, and you want to
 sign up for or log into `example.com`. Hashpass combines your universal password
@@ -28,11 +28,11 @@ with the website domain as follows: `example.com/correcthorsebatterystaple`. It
 then computes the [SHA-256 hash](http://en.wikipedia.org/wiki/SHA-2) of that
 string. Hashpass then hashes it again and again, `2^16` times in total. Finally,
 it outputs the first 96 bits of the result, encoded as 16 characters in
-[Base64](http://en.wikipedia.org/wiki/Base64). In this example, the final output
-is `CqYHklMMg9/GTL0g`. That's your password for `example.com`.
+[Base64](http://en.wikipedia.org/wiki/Base64). For this example, the final
+output is `CqYHklMMg9/GTL0g`. That's your password for `example.com`.
 
-For people who can read computer code, the following Python script implements
-the Hashpass algorithm:
+For people who know how to read computer code, the following Python script
+implements the Hashpass algorithm:
 
 ```python
 import base64

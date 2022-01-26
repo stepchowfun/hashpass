@@ -20,7 +20,8 @@ that you memorize. With this, you get:
 You can install Hashpass from the Chrome Web Store
 [here](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko).
 Then you can find the Hashpass button next to your address bar or in the
-extensions dropdown.
+extensions dropdown. By default, you can also open Hashpass with `Ctrl+Shift+P`
+(`Cmd+Shift+P` on macOS).
 
 ## How it works
 

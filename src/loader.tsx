@@ -1,22 +1,33 @@
 import * as React from 'react';
+import { createUseStyles } from 'react-jss';
 import { useEffect, useState } from 'react';
 
-import Notice from './notice';
 import UserInterface from './user-interface';
 import fireAndForget from './fire-and-forget';
 import getDomain from './get-domain';
 import getIsPasswordFieldActive from './get-is-password-field-active';
 
+const width = '320px';
+const height = '256px';
+
+const useStyles = createUseStyles({
+  loading: {
+    width,
+    height,
+  },
+});
+
 const Loader = (): React.ReactElement => {
+  const classes = useStyles();
   const [domain, setDomain] = useState<string | null | undefined>(undefined);
   const [isPasswordFieldActive, setIsPasswordFieldActive] = useState<
     boolean | null | undefined
   >(undefined);
 
   useEffect(() => {
-    // This promise is supposed to be infallible. These functions return `null` to signal errors,
-    // and we handle that below. So we don't have any special logic here for reporting exceptions in
-    // the user interface.
+    // These functions return `null` to signal errors rather than throwing exceptions, and we're
+    // okay with these values being `null`. So we don't have any special logic here for reporting
+    // exceptions in the user interface.
     fireAndForget(
       (async (): Promise<void> => {
         setDomain(await getDomain());
@@ -25,16 +36,8 @@ const Loader = (): React.ReactElement => {
     );
   }, []);
 
-  if (domain === null || isPasswordFieldActive === null) {
-    return (
-      <Notice isError>
-        Hashpass is blocked on this page. Try again on another website.
-      </Notice>
-    );
-  }
-
   if (domain === undefined || isPasswordFieldActive === undefined) {
-    return <Notice isError={false}>Loading…</Notice>;
+    return <div className={classes.loading} />;
   }
 
   return (

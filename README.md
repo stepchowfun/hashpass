@@ -17,12 +17,6 @@ that you memorize. With this, you get:
 
 ![Screenshot](https://github.com/stepchowfun/hashpass/blob/main/images/screenshot3.png)
 
-You can install Hashpass from the Chrome Web Store
-[here](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko).
-Then you can find the Hashpass button next to your address bar or in the
-extensions dropdown. By default, you can also open Hashpass with `Ctrl+Shift+P`
-(`Cmd+Shift+P` on macOS).
-
 ## How it works
 
 To use Hashpass, you need to decide on a _universal password_. That's the only
@@ -55,3 +49,11 @@ generated_password = base64.b64encode(bits).decode()[:16]
 
 print('Domain-specific password: ' + generated_password)
 ```
+
+## Installation instructions
+
+You can install Hashpass from the Chrome Web Store
+[here](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko).
+Then you can find the Hashpass button next to your address bar or in the
+extensions dropdown. By default, you can also open Hashpass with `Ctrl+Shift+P`
+(`Cmd+Shift+P` on macOS).

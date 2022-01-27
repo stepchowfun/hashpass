@@ -2,6 +2,15 @@ import * as React from 'react';
 import { createUseStyles } from 'react-jss';
 import { useCallback } from 'react';
 
+export type ButtonType =
+  | { type: 'noninteractive' }
+  | { type: 'normal'; onClick: () => void }
+  | { type: 'submit' };
+
+interface ButtonStyleArgs {
+  interactive: boolean;
+}
+
 const useStyles = createUseStyles({
   button: {
     display: 'block',
@@ -11,15 +20,20 @@ const useStyles = createUseStyles({
     border: '0px',
     padding: '0px',
     background: 'transparent',
-    cursor: 'pointer',
+    cursor: ({ interactive }: ButtonStyleArgs) =>
+      interactive ? 'pointer' : 'default',
     pointerEvents: 'auto', // Override [ref:button_container_pointer_events_none].
-    opacity: '0.25', // Calculated to match the border and label color.
+
+    // The 0.25 value was calculated to match the border and label color.
+    opacity: ({ interactive }: ButtonStyleArgs) => (interactive ? '0.25' : '1'),
+
     '&:focus, &:hover': {
       opacity: '1',
       outline: 'none',
     },
     '&:active': {
-      opacity: '0.6',
+      opacity: ({ interactive }: ButtonStyleArgs) =>
+        interactive ? '0.6' : '1',
     },
   },
   icon: {
@@ -31,26 +45,28 @@ const useStyles = createUseStyles({
   },
 });
 
-const Button = ({
+export const Button = ({
+  buttonType,
   description,
   imageName,
-  onClick,
 }: {
+  buttonType: ButtonType;
   description: string;
   imageName: string;
-  onClick: (() => void) | null;
 }): React.ReactElement => {
-  const classes = useStyles();
+  const classes = useStyles({
+    interactive: buttonType.type !== 'noninteractive',
+  });
 
   const onClickWithBlur = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>): void => {
       event.currentTarget.blur();
 
-      if (onClick !== null) {
-        onClick();
+      if (buttonType.type === 'normal') {
+        buttonType.onClick();
       }
     },
-    [onClick],
+    [buttonType],
   );
 
   return (
@@ -58,11 +74,9 @@ const Button = ({
       className={classes.button}
       onClick={onClickWithBlur}
       title={description}
-      type={onClick === null ? 'submit' : 'button'}
+      type={buttonType.type === 'submit' ? 'submit' : 'button'}
     >
       <img className={classes.icon} src={`/images/${imageName}.svg`} />
     </button>
   );
 };
-
-export default Button;

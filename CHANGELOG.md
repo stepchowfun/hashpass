@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.2] - 2022-01-27
+
+- The button to reset the domain is now hidden when clicking the button would
+  have no effect.
+- When using the button to copy the generated password to the clipboard, there
+  is now a visual indication that the operation was successful.
+
+### Changed
+
 ## [2.1.1] - 2022-01-26
 
 ### Changed

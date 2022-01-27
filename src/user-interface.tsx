@@ -3,13 +3,14 @@ import { createUseStyles } from 'react-jss';
 import { debounce } from 'debounce';
 import { useEffect, useCallback, useRef, useState } from 'react';
 
-import Button from './button';
 import Input from './input';
 import fillInPassword from './fill-in-password';
 import fireAndForget from './fire-and-forget';
 import hashpass from './worker-client';
+import { Button } from './button';
 
 const debounceMilliseconds = 200;
+const copyToClipboardSuccessIndicatorMilliseconds = 1000;
 
 const useStyles = createUseStyles({
   domain: {
@@ -36,6 +37,8 @@ const UserInterface = ({
   // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Start with 0 tasks in progress.
   const [updatesInProgress, setUpdatesInProgress] = useState(0);
   const [pendingCopyToClipboard, setPendingCopyToClipboard] = useState(false);
+  const [copyToClipboardTimeoutId, setCopyToClipboardTimeoutId] =
+    useState<ReturnType<typeof setTimeout> | null>(null);
   const [pendingFillInPassword, setPendingFillInPassword] = useState(false);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
@@ -116,7 +119,21 @@ const UserInterface = ({
     if (pendingCopyToClipboard) {
       setPendingCopyToClipboard(false);
 
-      fireAndForget(navigator.clipboard.writeText(generatedPassword));
+      fireAndForget(
+        (async (): Promise<void> => {
+          await navigator.clipboard.writeText(generatedPassword);
+
+          setCopyToClipboardTimeoutId((oldTimeoutId) => {
+            if (oldTimeoutId !== null) {
+              clearTimeout(oldTimeoutId);
+            }
+
+            return setTimeout(() => {
+              setCopyToClipboardTimeoutId(null);
+            }, copyToClipboardSuccessIndicatorMilliseconds);
+          });
+        })(),
+      );
     }
 
     if (pendingFillInPassword) {
@@ -135,14 +152,14 @@ const UserInterface = ({
     <form onSubmit={onFormSubmit}>
       <Input
         buttons={
-          initialDomain === null
+          initialDomain === null || domain === initialDomain
             ? []
             : [
                 <Button
+                  buttonType={{ type: 'normal', onClick: onResetDomain }}
                   description="Reset the domain."
                   imageName="refresh"
                   key="refresh"
-                  onClick={onResetDomain}
                 />,
               ]
         }
@@ -157,6 +174,10 @@ const UserInterface = ({
       <Input
         buttons={[
           <Button
+            buttonType={{
+              type: 'normal',
+              onClick: onToggleUniversalPasswordHidden,
+            }}
             description={
               isUniversalPasswordHidden
                 ? 'Show the password.'
@@ -164,7 +185,6 @@ const UserInterface = ({
             }
             imageName={isUniversalPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
-            onClick={onToggleUniversalPasswordHidden}
           />,
         ]}
         disabled={false}
@@ -181,20 +201,31 @@ const UserInterface = ({
           ...(isPasswordFieldActive === true
             ? [
                 <Button
+                  buttonType={{ type: 'submit' }}
                   description={`Fill in the password field on ${domain} and close Hashpass.`}
                   imageName="log-in"
                   key="log-in"
-                  onClick={null} // This button submits the form.
                 />,
               ]
             : []),
           <Button
+            buttonType={
+              copyToClipboardTimeoutId
+                ? { type: 'noninteractive' }
+                : {
+                    type: 'normal',
+                    onClick: onCopyGeneratedPasswordToClipboard,
+                  }
+            }
             description="Copy the password to the clipboard."
-            imageName="clipboard-copy"
+            imageName={copyToClipboardTimeoutId ? 'check' : 'clipboard-copy'}
             key="clipboard-copy"
-            onClick={onCopyGeneratedPasswordToClipboard}
           />,
           <Button
+            buttonType={{
+              type: 'normal',
+              onClick: onToggleGeneratedPasswordHidden,
+            }}
             description={
               isGeneratedPasswordHidden
                 ? 'Show the password.'
@@ -202,7 +233,6 @@ const UserInterface = ({
             }
             imageName={isGeneratedPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
-            onClick={onToggleGeneratedPasswordHidden}
           />,
         ]}
         disabled

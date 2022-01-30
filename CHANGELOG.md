@@ -8,12 +8,12 @@ and this project adheres to
 
 ## [2.1.2] - 2022-01-27
 
+### Changed
+
 - The button to reset the domain is now hidden when clicking the button would
   have no effect.
 - When using the button to copy the generated password to the clipboard, there
   is now a visual indication that the operation was successful.
-
-### Changed
 
 ## [2.1.1] - 2022-01-26
 

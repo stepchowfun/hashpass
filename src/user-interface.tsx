@@ -166,6 +166,7 @@ const UserInterface = ({
         disabled={false}
         hideValue={false}
         label="Domain"
+        monospace={false}
         onChange={setDomain}
         placeholder="example.com"
         updating={false}
@@ -190,6 +191,7 @@ const UserInterface = ({
         disabled={false}
         hideValue={isUniversalPasswordHidden}
         label="Universal password"
+        monospace
         onChange={setUniversalPassword}
         placeholder=""
         ref={universalPasswordRef}
@@ -246,6 +248,7 @@ const UserInterface = ({
             </span>
           )
         }
+        monospace
         onChange={null}
         placeholder=""
         // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Any tasks in progress?

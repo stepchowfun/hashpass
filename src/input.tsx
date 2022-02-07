@@ -7,6 +7,7 @@ const inputHeight = '28px';
 
 interface InputStyleArgs {
   disabled: boolean;
+  monospace: boolean;
   updating: boolean;
 }
 
@@ -52,6 +53,18 @@ const useStyles = createUseStyles({
     background: 'transparent',
     lineHeight: inputHeight,
     fontSize: '16px',
+    fontFamily: ({ monospace }: InputStyleArgs) =>
+      monospace
+        ? [
+            'ui-monospace',
+            'SFMono-Regular',
+            'SF Mono',
+            'Menlo',
+            'Consolas',
+            '"Liberation Mono"',
+            'monospace',
+          ]
+        : 'inherit',
     color: '#222222',
   },
   buttonContainer: {
@@ -76,6 +89,7 @@ const Input = React.forwardRef(
       disabled,
       hideValue,
       label,
+      monospace,
       onChange,
       placeholder,
       updating,
@@ -85,6 +99,7 @@ const Input = React.forwardRef(
       disabled: boolean;
       hideValue: boolean;
       label: React.ReactChild;
+      monospace: boolean;
       onChange: ((value: string) => void) | null;
       placeholder: string;
       updating: boolean;
@@ -92,7 +107,7 @@ const Input = React.forwardRef(
     },
     ref: React.ForwardedRef<HTMLInputElement>,
   ): React.ReactElement => {
-    const classes = useStyles({ disabled, updating });
+    const classes = useStyles({ disabled, monospace, updating });
     const newOnChange = useMemo(
       () =>
         (event: React.FormEvent<HTMLInputElement>): void => {

@@ -29,20 +29,22 @@ module.exports = {
     project: 'tsconfig.json',
   },
   rules: {
-    // Modify this rule to accommodate the fact that React component names are PascalCase.
+    // Modify this rule to accommodate the fact that React component names are PascalCase and to
+    // skip the rule for members that require quotes (e.g., '&:focus, &:hover' in JSS).
     '@typescript-eslint/naming-convention': [
       'error',
       {
         selector: 'default',
         format: ['camelCase'],
-        leadingUnderscore: 'allow',
-        trailingUnderscore: 'allow',
       },
       {
         selector: 'variable',
-        format: ['camelCase', 'UPPER_CASE', 'PascalCase'], // We've added 'PascalCase' here.
-        leadingUnderscore: 'allow',
-        trailingUnderscore: 'allow',
+        format: ['camelCase', 'UPPER_CASE', 'PascalCase'],
+      },
+      {
+        selector: 'memberLike',
+        format: null,
+        modifiers: ['requiresQuotes'],
       },
       {
         selector: 'typeLike',

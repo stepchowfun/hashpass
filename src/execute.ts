@@ -28,5 +28,5 @@ export default async function execute<T, U>(
     return null;
   }
 
-  return result;
+  return result as Promise<U>;
 }

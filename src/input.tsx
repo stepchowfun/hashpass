@@ -95,15 +95,15 @@ const Input = React.forwardRef(
       updating,
       value,
     }: {
-      buttons: React.ReactChild[];
-      disabled: boolean;
-      hideValue: boolean;
-      label: React.ReactChild;
-      monospace: boolean;
-      onChange: ((value: string) => void) | null;
-      placeholder: string;
-      updating: boolean;
-      value: string;
+      readonly buttons: React.ReactChild[];
+      readonly disabled: boolean;
+      readonly hideValue: boolean;
+      readonly label: React.ReactChild;
+      readonly monospace: boolean;
+      readonly onChange: ((value: string) => void) | null;
+      readonly placeholder: string;
+      readonly updating: boolean;
+      readonly value: string;
     },
     ref: React.ForwardedRef<HTMLInputElement>,
   ): React.ReactElement => {

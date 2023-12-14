@@ -1,6 +1,6 @@
 import * as React from 'react';
+import debounce from 'debounce';
 import { createUseStyles } from 'react-jss';
-import { debounce } from 'debounce';
 import { useEffect, useCallback, useRef, useState } from 'react';
 
 import Input from './input';
@@ -22,11 +22,11 @@ const UserInterface = ({
   initialDomain,
   isPasswordFieldActive,
 }: {
-  initialDomain: string | null;
-  isPasswordFieldActive: boolean | null;
+  readonly initialDomain: string | null;
+  readonly isPasswordFieldActive: boolean | null;
 }): React.ReactElement => {
   const classes = useStyles();
-  const initialDomainOrEmpty = initialDomain === null ? '' : initialDomain;
+  const initialDomainOrEmpty = initialDomain ?? '';
   const [domain, setDomain] = useState(initialDomainOrEmpty);
   const [universalPassword, setUniversalPassword] = useState('');
   const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] =

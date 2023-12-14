@@ -50,9 +50,9 @@ export const Button = ({
   description,
   imageName,
 }: {
-  buttonType: ButtonType;
-  description: string;
-  imageName: string;
+  readonly buttonType: ButtonType;
+  readonly description: string;
+  readonly imageName: string;
 }): React.ReactElement => {
   const classes = useStyles({
     interactive: buttonType.type !== 'noninteractive',

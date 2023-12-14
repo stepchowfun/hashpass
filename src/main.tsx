@@ -1,7 +1,7 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import jss from 'jss';
 import preset from 'jss-preset-default';
+import { createRoot } from 'react-dom/client';
 
 import Loader from './loader';
 
@@ -42,9 +42,8 @@ jss
   })
   .attach();
 
-ReactDOM.render(
+createRoot(document.body.appendChild(document.createElement('div'))).render(
   <React.StrictMode>
     <Loader />
   </React.StrictMode>,
-  document.body.appendChild(document.createElement('div')),
 );

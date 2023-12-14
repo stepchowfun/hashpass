@@ -39,6 +39,10 @@ module.exports = {
         trailingUnderscore: 'allow',
       },
       {
+        selector: 'import',
+        format: ['camelCase', 'PascalCase'],
+      },
+      {
         selector: 'variable',
         format: ['camelCase', 'UPPER_CASE', 'PascalCase'], // We've added 'PascalCase' here.
         leadingUnderscore: 'allow',
@@ -47,6 +51,11 @@ module.exports = {
       {
         selector: 'typeLike',
         format: ['PascalCase'],
+      },
+      {
+        selector: 'objectLiteralProperty',
+        modifiers: ['requiresQuotes'],
+        format: null, // To support properties like '&:hover' for JSS
       },
     ],
 

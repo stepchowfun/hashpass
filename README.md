@@ -57,3 +57,10 @@ You can install Hashpass from the Chrome Web Store
 Then you can find the Hashpass button next to your address bar or in the
 extensions dropdown. By default, you can also open Hashpass with `Ctrl+Shift+P`
 (`Cmd+Shift+P` on macOS).
+
+## Website
+
+Hashpass is also available on the web at
+[stepchowfun.github.io/hashpass](https://stepchowfun.github.io/hashpass/),
+although the Chrome extension is generally more ergonomic to use since it can
+interact with the page you're logging into.

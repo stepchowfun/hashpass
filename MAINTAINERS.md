@@ -18,6 +18,8 @@ When setting up the repository on GitHub, configure the following settings:
     - Add the `Validate` status check.
   - Enable `Include administrators`.
 - Under `Options`, enable `Automatically delete head branches`.
+- Under `Pages`, change the `Source` to `GitHub Actions` and check
+  `Enforce HTTPS`.
 
 ### Release instructions
 

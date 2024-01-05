@@ -17,7 +17,22 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: stepchowfun/toast/.github/actions/toast@main
         with:
-          tasks: build check
+          tasks: build check release
           docker_repo: stephanmisc/toast
           read_remote_cache: ${{ github.event_name == 'push' }}
           write_remote_cache: ${{ github.event_name == 'push' }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website/
+  deploy_github_pages:
+    name: Deploy to GitHub pages
+    needs: ci
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{steps.deployment.outputs.page_url}}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/deploy-pages@v4

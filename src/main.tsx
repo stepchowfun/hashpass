@@ -4,6 +4,7 @@ import preset from 'jss-preset-default';
 import { createRoot } from 'react-dom/client';
 
 import Loader from './loader';
+import { width, height } from './user-interface';
 
 jss.setup(preset());
 
@@ -14,8 +15,9 @@ jss
         boxSizing: 'border-box',
         margin: 0,
       },
-      'html, body': {
-        width: '352px',
+      html: {
+        minWidth: width,
+        minHeight: height,
       },
       body: {
         // Create a block formatting context to contain margins of descendants.

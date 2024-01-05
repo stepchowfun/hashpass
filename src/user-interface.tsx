@@ -9,6 +9,8 @@ import fireAndForget from './fire-and-forget';
 import hashpass from './worker-client';
 import { Button } from './button';
 
+const width = '352px';
+const height = '256px';
 const debounceMilliseconds = 200;
 const copyToClipboardSuccessIndicatorMilliseconds = 1000;
 
@@ -266,4 +268,4 @@ const UserInterface = ({
   );
 };
 
-export default UserInterface;
+export { UserInterface, width, height };

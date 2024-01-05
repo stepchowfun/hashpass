@@ -2,18 +2,20 @@ import * as React from 'react';
 import { createUseStyles } from 'react-jss';
 import { useEffect, useState } from 'react';
 
-import UserInterface from './user-interface';
 import fireAndForget from './fire-and-forget';
 import getDomain from './get-domain';
 import getIsPasswordFieldActive from './get-is-password-field-active';
-
-const width = '320px';
-const height = '256px';
+import { UserInterface, width, height } from './user-interface';
 
 const useStyles = createUseStyles({
-  loading: {
+  loader: {
+    display: 'flow-root',
     width,
     height,
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
   },
 });
 
@@ -36,15 +38,15 @@ const Loader = (): React.ReactElement => {
     );
   }, []);
 
-  if (domain === undefined || isPasswordFieldActive === undefined) {
-    return <div className={classes.loading} />;
-  }
-
   return (
-    <UserInterface
-      initialDomain={domain}
-      isPasswordFieldActive={isPasswordFieldActive}
-    />
+    <div className={classes.loader}>
+      {domain !== undefined && isPasswordFieldActive !== undefined && (
+        <UserInterface
+          initialDomain={domain}
+          isPasswordFieldActive={isPasswordFieldActive}
+        />
+      )}
+    </div>
   );
 };
 

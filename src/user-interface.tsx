@@ -40,6 +40,7 @@ const UserInterface = ({
   const [copyToClipboardTimeoutId, setCopyToClipboardTimeoutId] =
     useState<ReturnType<typeof setTimeout> | null>(null);
   const [pendingFillInPassword, setPendingFillInPassword] = useState(false);
+  const domainRef = useRef<HTMLInputElement>(null);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps -- We need to debounce this function.
@@ -63,12 +64,17 @@ const UserInterface = ({
   );
 
   useEffect(() => {
-    const inputElement = universalPasswordRef.current;
+    const domainElement = domainRef.current;
+    const universalPasswordElement = universalPasswordRef.current;
 
-    if (inputElement !== null) {
-      inputElement.focus();
+    if (initialDomain === null) {
+      if (domainElement !== null) {
+        domainElement.focus();
+      }
+    } else if (universalPasswordElement !== null) {
+      universalPasswordElement.focus();
     }
-  }, []);
+  }, [initialDomain]);
 
   useEffect(() => {
     updateGeneratedPassword(domain, universalPassword);
@@ -77,20 +83,20 @@ const UserInterface = ({
   const onResetDomain = useCallback((): void => {
     setDomain(initialDomainOrEmpty);
 
-    const inputElement = universalPasswordRef.current;
+    const universalPasswordElement = universalPasswordRef.current;
 
-    if (inputElement !== null) {
-      inputElement.focus();
+    if (universalPasswordElement !== null) {
+      universalPasswordElement.focus();
     }
   }, [initialDomainOrEmpty]);
 
   const onToggleUniversalPasswordHidden = useCallback((): void => {
     setIsUniversalPasswordHidden(!isUniversalPasswordHidden);
 
-    const inputElement = universalPasswordRef.current;
+    const universalPasswordElement = universalPasswordRef.current;
 
-    if (inputElement !== null) {
-      inputElement.focus();
+    if (universalPasswordElement !== null) {
+      universalPasswordElement.focus();
     }
   }, [isUniversalPasswordHidden]);
 
@@ -169,6 +175,7 @@ const UserInterface = ({
         monospace={false}
         onChange={setDomain}
         placeholder="example.com"
+        ref={domainRef}
         updating={false}
         value={domain}
       />

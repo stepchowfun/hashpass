@@ -76,7 +76,7 @@ export const Button = ({
       title={description}
       type={buttonType.type === 'submit' ? 'submit' : 'button'}
     >
-      <img className={classes.icon} src={`/images/${imageName}.svg`} />
+      <img className={classes.icon} src={`images/${imageName}.svg`} />
     </button>
   );
 };

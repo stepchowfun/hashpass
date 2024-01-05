@@ -63,6 +63,7 @@ tasks:
       - .git
 
       # [tag:excluded_input_paths] Keep this in sync with [ref:gitignore].
+      - website/
       - dist/
       - generated/
       - hashpass.zip
@@ -105,9 +106,20 @@ tasks:
       - index.html
       - manifest.json
     output_paths:
+      - website
       - hashpass.zip
     command: |
-      # Create a ZIP file containing the relevant files.
+      # Create a directory containing the relevant files for the website.
+      mkdir website
+      cp -R \
+        HEROICONS-LICENSE.md \
+        LICENSE.md \
+        dist \
+        images \
+        index.html \
+        website
+
+      # Create a ZIP file containing the relevant files for the Chrome extension.
       zip -r hashpass.zip \
         HEROICONS-LICENSE.md \
         LICENSE.md \
@@ -118,7 +130,7 @@ tasks:
         src
 
       # Inform the user of where the artifact is.
-      echo 'Generated `hashpass.zip`.'
+      echo 'Generated `website` and `hashpass.zip`.'
 
   format:
     description: Format the source code.

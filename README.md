@@ -11,7 +11,6 @@ that you memorize. This gives you:
 
 - the security of having a unique password for each website,
 - the convenience of only having to memorize one password,
-- the freedom from having to sync your passwords across your devices, and
 - the comfort of knowing that neither you nor any cloud provider can lose your
   passwords.
 

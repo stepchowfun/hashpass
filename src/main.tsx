@@ -10,6 +10,7 @@ const chromeExtensionProtocol = 'chrome-extension:';
 const chromeExtensionUrl =
   'https://chromewebstore.google.com/detail/hashpass/' +
   'gkmegkoiplibopkmieofaaeloldidnko';
+const githubUrl = 'https://github.com/stepchowfun/hashpass';
 
 jss.setup(preset());
 
@@ -71,6 +72,7 @@ const useStyles = createUseStyles({
   },
   p: {
     marginTop: '16px',
+    lineHeight: '16px',
     fontSize: '12px',
     color: '#666666',
   },
@@ -108,6 +110,11 @@ const Main = (): React.ReactElement => {
       <p className={classes.p}>
         Get the Chrome extension{' '}
         <a className={classes.a} href={chromeExtensionUrl}>
+          {' '}
+          here
+        </a>
+        . You can learn about Hashpass and browse its source code{' '}
+        <a className={classes.a} href={githubUrl}>
           {' '}
           here
         </a>

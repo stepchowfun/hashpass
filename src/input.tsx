@@ -17,7 +17,7 @@ const useStyles = createUseStyles({
     position: 'relative', // Used for positioning `buttonContainer` (below).
     width: '320px',
     height: '64px',
-    margin: '16px',
+    marginTop: '16px',
     border: '2px solid #cccccc',
     borderRadius: '8px',
     cursor: 'text',

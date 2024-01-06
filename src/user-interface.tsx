@@ -9,8 +9,6 @@ import fireAndForget from './fire-and-forget';
 import hashpass from './worker-client';
 import { Button } from './button';
 
-const width = '352px';
-const height = '256px';
 const debounceMilliseconds = 200;
 const copyToClipboardSuccessIndicatorMilliseconds = 1000;
 
@@ -25,11 +23,10 @@ const UserInterface = ({
   isPasswordFieldActive,
 }: {
   readonly initialDomain: string | null;
-  readonly isPasswordFieldActive: boolean | null;
+  readonly isPasswordFieldActive: boolean;
 }): React.ReactElement => {
   const classes = useStyles();
-  const initialDomainOrEmpty = initialDomain ?? '';
-  const [domain, setDomain] = useState(initialDomainOrEmpty);
+  const [domain, setDomain] = useState<string | null>(initialDomain);
   const [universalPassword, setUniversalPassword] = useState('');
   const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] =
     useState(true);
@@ -69,28 +66,35 @@ const UserInterface = ({
     const domainElement = domainRef.current;
     const universalPasswordElement = universalPasswordRef.current;
 
-    if (initialDomain === null) {
-      if (domainElement !== null) {
-        domainElement.focus();
+    // Set the domain and focus the appropriate input if necessary.
+    if (initialDomain !== null && domain === null) {
+      setDomain(initialDomain);
+
+      if (document.activeElement === document.body) {
+        if (initialDomain === '') {
+          if (domainElement !== null) {
+            domainElement.focus();
+          }
+        } else if (universalPasswordElement !== null) {
+          universalPasswordElement.focus();
+        }
       }
-    } else if (universalPasswordElement !== null) {
-      universalPasswordElement.focus();
     }
-  }, [initialDomain]);
+  }, [domain, initialDomain]);
 
   useEffect(() => {
-    updateGeneratedPassword(domain, universalPassword);
+    updateGeneratedPassword(domain ?? '', universalPassword);
   }, [updateGeneratedPassword, domain, universalPassword]);
 
   const onResetDomain = useCallback((): void => {
-    setDomain(initialDomainOrEmpty);
+    setDomain(initialDomain ?? '');
 
     const universalPasswordElement = universalPasswordRef.current;
 
     if (universalPasswordElement !== null) {
       universalPasswordElement.focus();
     }
-  }, [initialDomainOrEmpty]);
+  }, [initialDomain]);
 
   const onToggleUniversalPasswordHidden = useCallback((): void => {
     setIsUniversalPasswordHidden(!isUniversalPasswordHidden);
@@ -179,7 +183,7 @@ const UserInterface = ({
         placeholder="example.com"
         ref={domainRef}
         updating={false}
-        value={domain}
+        value={domain ?? ''}
       />
       <Input
         buttons={[
@@ -209,11 +213,11 @@ const UserInterface = ({
       />
       <Input
         buttons={[
-          ...(isPasswordFieldActive === true
+          ...(isPasswordFieldActive
             ? [
                 <Button
                   buttonType={{ type: 'submit' }}
-                  description={`Fill in the password field on ${domain} and close Hashpass.`}
+                  description="Fill in the password field and close Hashpass."
                   imageName="log-in"
                   key="log-in"
                 />,
@@ -249,7 +253,7 @@ const UserInterface = ({
         disabled
         hideValue={isGeneratedPasswordHidden}
         label={
-          domain.trim() === '' ? (
+          (domain ?? '').trim() === '' ? (
             'Password for this domain'
           ) : (
             <span>
@@ -268,4 +272,4 @@ const UserInterface = ({
   );
 };
 
-export { UserInterface, width, height };
+export default UserInterface;

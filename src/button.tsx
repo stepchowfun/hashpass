@@ -58,11 +58,13 @@ export const Button = ({
     interactive: buttonType.type !== 'noninteractive',
   });
 
-  const onClickWithBlur = useCallback(
+  const onClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>): void => {
       event.currentTarget.blur();
 
       if (buttonType.type === 'normal') {
+        event.preventDefault();
+        event.stopPropagation();
         buttonType.onClick();
       }
     },
@@ -72,7 +74,7 @@ export const Button = ({
   return (
     <button
       className={classes.button}
-      onClick={onClickWithBlur}
+      onClick={onClick}
       title={description}
       type={buttonType.type === 'submit' ? 'submit' : 'button'}
     >

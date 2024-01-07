@@ -11,8 +11,8 @@ that you memorize. This gives you:
 
 - the security of having a unique password for each website,
 - the convenience of only having to memorize one password,
-- the comfort of knowing that neither you nor any cloud provider can lose your
-  passwords.
+- the comfort of knowing that neither you nor any third party can lose or leak
+  your passwords.
 
 ![Screenshot](https://github.com/stepchowfun/hashpass/blob/main/images/screenshot3.png)
 

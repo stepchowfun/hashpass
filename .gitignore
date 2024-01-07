@@ -1,6 +1,5 @@
 # [tag:gitignore] Keep this in sync with [ref:excluded_input_paths].
 /website/
 /dist/
-/generated/
 /hashpass.zip
 /node_modules/

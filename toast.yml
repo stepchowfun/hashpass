@@ -65,7 +65,6 @@ tasks:
       # [tag:excluded_input_paths] Keep this in sync with [ref:gitignore].
       - website/
       - dist/
-      - generated/
       - hashpass.zip
       - node_modules/
 

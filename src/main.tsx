@@ -118,7 +118,7 @@ const Main = (): React.ReactElement => {
           {' '}
           here
         </a>
-        . This website collects no user data and makes no API calls.
+        . This website collects no user data and makes no RPC calls.
       </p>
     </div>
   );

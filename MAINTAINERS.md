@@ -25,9 +25,10 @@ When setting up the repository on GitHub, configure the following settings:
 
 Follow these steps to release a new version:
 
-1. Bump the version in `manifest.json` and `package.json`, run `npm install` to
-   update `package-lock.json`, and update `CHANGELOG.md` with information about
-   the new version. Ship those changes as a single commit.
+1. Bump the version in `[file:manifest.json]` and `[file:package.json]`, run
+   `npm install` to update `[file:package-lock.json]`, and update
+   `[file:CHANGELOG.md]` with information about the new version. Ship those
+   changes as a single commit.
 2. Run `toast release` to build the extension. It will produce a file called
    `hashpass.zip`.
 3. Upload the ZIP file to the

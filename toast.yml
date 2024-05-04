@@ -1,4 +1,4 @@
-image: ubuntu:22.04
+image: ubuntu:24.04
 default: check
 user: user
 command_prefix: |
@@ -44,8 +44,8 @@ tasks:
     description: Create a user who doesn't have root privileges.
     user: root
     command: |
-      # Create a user named `user` with a home directory.
-      adduser --disabled-password --gecos '' user
+      # Create a user named `user` with a home directory and with Bash as the login shell.
+      useradd user --create-home --shell /bin/bash
 
   install_tools:
     description: Install the tools needed to build and validate the extension.

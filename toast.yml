@@ -2,8 +2,17 @@ image: ubuntu:24.04
 default: check
 user: user
 command_prefix: |
-  # Make Bash log commands and not silently ignore errors.
-  set -euxo pipefail
+  # Make not silently ignore errors.
+  set -euo pipefail
+
+  # Load the NVM startup file, if it exists.
+  if [ -f "$HOME/.nvm/nvm.sh" ]; then
+    export NVM_DIR="$HOME/.nvm"
+    . "$HOME/.nvm/nvm.sh"
+  fi
+
+  # Make Bash log commands.
+  set -x
 tasks:
   install_packages:
     description: Install system packages.
@@ -18,18 +27,6 @@ tasks:
       # - zip             - Used for producing the production release
       apt-get update
       apt-get install --yes ca-certificates curl gnupg ripgrep zip
-
-      # Install the following packages:
-      #
-      # - nodejs - Used to build the extension.
-      mkdir -p /etc/apt/keyrings
-      curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key |
-        gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
-      NODE_MAJOR=20
-      echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_MAJOR.x nodistro main" |
-        tee /etc/apt/sources.list.d/nodesource.list
-      apt-get update
-      apt-get install --yes nodejs
 
   install_tagref:
     description: Install Tagref, a reference checking tool.
@@ -47,11 +44,24 @@ tasks:
       # Create a user named `user` with a home directory and with Bash as the login shell.
       useradd user --create-home --shell /bin/bash
 
+  install_node:
+    description: Install Node.js, a JavaScript runtime environment.
+    dependencies:
+      - install_packages
+      - create_user
+    command: |
+      # Install Node.js.
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      export NVM_DIR="$HOME/.nvm"
+      . "$NVM_DIR/nvm.sh"
+      nvm install 18.17.0
+
   install_tools:
     description: Install the tools needed to build and validate the extension.
     dependencies:
-      - install_tagref
       - create_user
+      - install_node
+      - install_tagref
 
   repository:
     description: Import the repository.

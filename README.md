@@ -1,7 +1,5 @@
 # Hashpass: a simple password manager with a twist
 
-[![Build status](https://github.com/stepchowfun/hashpass/workflows/Continuous%20integration/badge.svg?branch=main)](https://github.com/stepchowfun/hashpass/actions?query=branch%3Amain)
-
 [Hashpass](https://chrome.google.com/webstore/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko)
 is a password manager which doesn't store any passwords. Instead, it generates
 passwords on the fly using a

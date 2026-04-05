@@ -99,6 +99,7 @@ tasks:
 
       # Check references with Tagref.
       tagref
+      tagref list-unused --fail-if-any
 
       # Enforce that lines span no more than 100 columns.
       if rg --line-number --type ts '.{101}' src; then

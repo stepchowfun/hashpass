@@ -13,8 +13,8 @@ the bug.
 
 **Environment information:**
 
-- Hashpass version: [e.g. 0.0.0]
-- Chrome version: [e.g. 97.0.4692.71 (Official Build) (x86_64)]
-- OS: [e.g. macOS Big Sur 11.4 (20F71)]
+- Hashpass version: [e.g., 0.0.0]
+- Chrome version: [e.g., 97.0.4692.71 (Official Build) (x86_64)]
+- OS: [e.g., macOS Tahoe 26.4]
 
 **Additional context** Add any other context about the problem here.

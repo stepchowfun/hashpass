@@ -1,7 +1,7 @@
 import * as React from 'react';
 import debounce from 'debounce';
 import { createUseStyles } from 'react-jss';
-import { useEffect, useCallback, useRef, useState } from 'react';
+import { useEffect, useMemo, useCallback, useRef, useState } from 'react';
 
 import Input from './input';
 import fillInPassword from './fill-in-password';
@@ -33,7 +33,6 @@ const UserInterface = ({
   const [generatedPassword, setGeneratedPassword] = useState('');
   const [isGeneratedPasswordHidden, setIsGeneratedPasswordHidden] =
     useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Start with 0 tasks in progress.
   const [updatesInProgress, setUpdatesInProgress] = useState(0);
   const [pendingCopyToClipboard, setPendingCopyToClipboard] = useState(false);
   const [copyToClipboardTimeoutId, setCopyToClipboardTimeoutId] =
@@ -42,23 +41,26 @@ const UserInterface = ({
   const domainRef = useRef<HTMLInputElement>(null);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- We need to debounce this function.
-  const updateGeneratedPassword = useCallback(
-    debounce((newDomain: string, newUniversalPassword: string) => {
-      setUpdatesInProgress(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Increment = +1.
-        (previousTasksInProgress) => previousTasksInProgress + 1,
-      );
-      fireAndForget(
-        (async (): Promise<void> => {
-          setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
-          setUpdatesInProgress(
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Decrement = -1.
-            (previousTasksInProgress) => previousTasksInProgress - 1,
-          );
-        })(),
-      );
-    }, debounceMilliseconds),
+  const updateGeneratedPassword = useMemo(
+    () =>
+      debounce((newDomain: string, newUniversalPassword: string) => {
+        setUpdatesInProgress(
+          (previousTasksInProgress) => previousTasksInProgress + 1,
+        );
+        fireAndForget(
+          (async (): Promise<void> => {
+            try {
+              setGeneratedPassword(
+                await hashpass(newDomain, newUniversalPassword),
+              );
+            } finally {
+              setUpdatesInProgress(
+                (previousTasksInProgress) => previousTasksInProgress - 1,
+              );
+            }
+          })(),
+        );
+      }, debounceMilliseconds),
     [],
   );
 
@@ -85,6 +87,13 @@ const UserInterface = ({
   useEffect(() => {
     updateGeneratedPassword(domain ?? '', universalPassword);
   }, [updateGeneratedPassword, domain, universalPassword]);
+
+  useEffect(
+    () => () => {
+      updateGeneratedPassword.clear();
+    },
+    [updateGeneratedPassword],
+  );
 
   const onResetDomain = useCallback((): void => {
     setDomain(initialDomain ?? '');
@@ -116,7 +125,7 @@ const UserInterface = ({
   }, [isGeneratedPasswordHidden]);
 
   const onFormSubmit = useCallback(
-    (event: React.FormEvent): void => {
+    (event: React.SyntheticEvent<HTMLFormElement>): void => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -126,39 +135,42 @@ const UserInterface = ({
     [updateGeneratedPassword],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- No tasks in progress?
-  if (updatesInProgress === 0) {
-    if (pendingCopyToClipboard) {
-      setPendingCopyToClipboard(false);
-
-      fireAndForget(
-        (async (): Promise<void> => {
-          await navigator.clipboard.writeText(generatedPassword);
-
-          setCopyToClipboardTimeoutId((oldTimeoutId) => {
-            if (oldTimeoutId !== null) {
-              clearTimeout(oldTimeoutId);
-            }
-
-            return setTimeout(() => {
-              setCopyToClipboardTimeoutId(null);
-            }, copyToClipboardSuccessIndicatorMilliseconds);
-          });
-        })(),
-      );
+  useEffect(() => {
+    if (updatesInProgress !== 0 || !pendingCopyToClipboard) {
+      return;
     }
 
-    if (pendingFillInPassword) {
-      setPendingFillInPassword(false);
+    setPendingCopyToClipboard(false);
+    fireAndForget(
+      (async (): Promise<void> => {
+        await navigator.clipboard.writeText(generatedPassword);
 
-      fireAndForget(
-        (async (): Promise<void> => {
-          await fillInPassword(generatedPassword);
-          window.close();
-        })(),
-      );
+        setCopyToClipboardTimeoutId((oldTimeoutId) => {
+          if (oldTimeoutId !== null) {
+            clearTimeout(oldTimeoutId);
+          }
+
+          return setTimeout(() => {
+            setCopyToClipboardTimeoutId(null);
+          }, copyToClipboardSuccessIndicatorMilliseconds);
+        });
+      })(),
+    );
+  }, [generatedPassword, pendingCopyToClipboard, updatesInProgress]);
+
+  useEffect(() => {
+    if (updatesInProgress !== 0 || !pendingFillInPassword) {
+      return;
     }
-  }
+
+    setPendingFillInPassword(false);
+    fireAndForget(
+      (async (): Promise<void> => {
+        await fillInPassword(generatedPassword);
+        window.close();
+      })(),
+    );
+  }, [generatedPassword, pendingFillInPassword, updatesInProgress]);
 
   return (
     <form onSubmit={onFormSubmit}>
@@ -225,7 +237,7 @@ const UserInterface = ({
             : []),
           <Button
             buttonType={
-              copyToClipboardTimeoutId
+              copyToClipboardTimeoutId !== null
                 ? { type: 'noninteractive' }
                 : {
                     type: 'normal',
@@ -233,7 +245,9 @@ const UserInterface = ({
                   }
             }
             description="Copy the password to the clipboard."
-            imageName={copyToClipboardTimeoutId ? 'check' : 'clipboard-copy'}
+            imageName={
+              copyToClipboardTimeoutId !== null ? 'check' : 'clipboard-copy'
+            }
             key="clipboard-copy"
           />,
           <Button
@@ -264,7 +278,6 @@ const UserInterface = ({
         monospace
         onChange={null}
         placeholder=""
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Any tasks in progress?
         updating={updatesInProgress !== 0}
         value={generatedPassword}
       />

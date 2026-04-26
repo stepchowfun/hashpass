@@ -1,32 +1,29 @@
 export default async function execute<T, U>(
   func: (argument: T) => U,
   argument: T,
-): Promise<U | null> {
-  let tab;
-
+): Promise<Awaited<U> | null | undefined> {
   try {
-    [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  } catch (e) {
-    return null;
-  }
+    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
 
-  const tabId = tab.id;
+    if (tabs.length === 0 || tabs[0].id === undefined) {
+      return null;
+    }
 
-  if (tabId === undefined) {
-    return null;
-  }
+    const tabId = tabs[0].id;
 
-  let result;
-
-  try {
-    [{ result }] = await chrome.scripting.executeScript({
+    const [result] = await chrome.scripting.executeScript<[T], U>({
       target: { tabId },
       func,
       args: [argument],
     });
-  } catch (e) {
+
+    if ('error' in result) {
+      return null;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-type-assertion -- Chrome loses U.
+    return result.result as Awaited<U> | undefined;
+  } catch (_error) {
     return null;
   }
-
-  return result as Promise<U>;
 }

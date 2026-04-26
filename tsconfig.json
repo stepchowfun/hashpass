@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
+    "isolatedModules": true,
     "jsx": "react",
     "module": "nodenext",
     "outDir": "dist",
+    "rootDir": ".",
     "sourceMap": true,
     "strict": true,
-    "target": "es2021"
+    "target": "es2021",
+    "types": ["chrome", "jest"]
   },
-  "include": ["src/**/*.tsx"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

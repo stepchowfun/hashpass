@@ -7,26 +7,30 @@ const worker = new Worker('dist/worker.bundle.js');
 let nextMessageId = 0;
 
 // Keep track of all in-flight requests so we know what to do with the corresponding responses.
-let requests: Record<number, (generatedPassword: string) => void> = {};
+const requests = new Map<number, (generatedPassword: string) => void>();
 
 // This is the handler for incoming responses.
-worker.onmessage = (event: MessageEvent<Response>) => {
-  requests[event.data.messageId](event.data.generatedPassword);
-  delete requests[event.data.messageId];
+worker.onmessage = (event: MessageEvent<Response>): void => {
+  const requestHandler = requests.get(event.data.messageId);
+
+  if (requestHandler !== undefined) {
+    requestHandler(event.data.generatedPassword);
+    requests.delete(event.data.messageId);
+  }
 };
 
 export default function hashpass(
   domain: string,
   universalPassword: string,
 ): Promise<string> {
-  return new Promise((resolve, reject) => {
-    let request: Request = {
+  return new Promise((resolve) => {
+    const request: Request = {
       messageId: nextMessageId,
       domain,
       universalPassword,
     };
 
-    requests[nextMessageId] = resolve;
+    requests.set(nextMessageId, resolve);
 
     worker.postMessage(request);
 

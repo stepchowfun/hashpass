@@ -10,7 +10,6 @@ module.exports = {
   },
   extends: [
     'eslint:all',
-    'airbnb-base',
 
     // We don't need to extend `plugin:@typescript-eslint/recommended-requiring-type-checking` as
     // well, since this configuration (unlike the `recommended` one) already includes it.
@@ -67,6 +66,24 @@ module.exports = {
     // This allows us to define algebraic data types.
     '@typescript-eslint/no-type-alias': 'off',
 
+    // This project intentionally uses numeric constants directly in several places.
+    '@typescript-eslint/no-magic-numbers': 'off',
+
+    // Promise-returning callbacks aren't always well expressed as `async` functions.
+    '@typescript-eslint/promise-function-async': 'off',
+
+    // The codebase uses inference heavily, especially in React code.
+    '@typescript-eslint/explicit-function-return-type': 'off',
+
+    // Ignore intentionally unused parameters prefixed with `_`.
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        argsIgnorePattern: '^_',
+        caughtErrorsIgnorePattern: '^_',
+      },
+    ],
+
     // These built-in rules need to be disabled since they have TypeScript-aware versions in
     // `plugin:@typescript-eslint/all`. The set of rules was obtained by searching the
     // `https://github.com/typescript-eslint/typescript-eslint` repository for the string
@@ -77,10 +94,15 @@ module.exports = {
     'default-param-last': 'off',
     'dot-notation': 'off',
     'func-call-spacing': 'off',
+    'id-length': 'off',
     indent: 'off',
     'init-declarations': 'off',
     'keyword-spacing': 'off',
     'lines-between-class-members': 'off',
+    'max-lines-per-function': 'off',
+    'max-statements': 'off',
+    'no-inline-comments': 'off',
+    'no-negated-condition': 'off',
     'no-array-constructor': 'off',
     'no-dupe-class-members': 'off',
     'no-duplicate-imports': 'off',
@@ -96,11 +118,14 @@ module.exports = {
     'no-redeclare': 'off',
     'no-restricted-imports': 'off',
     'no-shadow': 'off',
+    'no-ternary': 'off',
     'no-throw-literal': 'off',
+    'no-undefined': 'off',
     'no-unused-expressions': 'off',
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
     'no-useless-constructor': 'off',
+    'one-var': 'off',
     'object-curly-spacing': 'off',
     'padding-line-between-statements': 'off',
     'padding-line-between-statements': 'off',
@@ -108,6 +133,8 @@ module.exports = {
     'require-await': 'off',
     'return-await': 'off',
     semi: 'off',
+    'sort-imports': 'off',
+    'sort-keys': 'off',
     'space-before-function-paren': 'off',
 
     // Report unnecessary `eslint-disable` directives.
@@ -133,6 +160,10 @@ module.exports = {
 
     // This rule is not useful to us.
     'react/jsx-no-literals': 'off',
+
+    // This is an advisory React Compiler rule that doesn't fit the one-time initialization we
+    // do here.
+    'react-hooks/set-state-in-effect': 'off',
   },
   overrides: [
     // This rule only makes sense for test files. Disable it for all other files.
@@ -141,6 +172,20 @@ module.exports = {
       excludedFiles: ['src/**/*.test.ts'],
       rules: {
         'jest/require-hook': 'off',
+      },
+    },
+    {
+      files: ['src/**/*.test.ts'],
+      rules: {
+        'jest/prefer-expect-assertions': 'off',
+        'jest/prefer-importing-jest-globals': 'off',
+        'jest/require-top-level-describe': 'off',
+      },
+    },
+    {
+      files: ['src/worker.ts'],
+      rules: {
+        'no-restricted-globals': 'off',
       },
     },
   ],

@@ -95,10 +95,10 @@ const Input = React.forwardRef(
       updating,
       value,
     }: {
-      readonly buttons: React.ReactChild[];
+      readonly buttons: React.ReactNode[];
       readonly disabled: boolean;
       readonly hideValue: boolean;
-      readonly label: React.ReactChild;
+      readonly label: React.ReactNode;
       readonly monospace: boolean;
       readonly onChange: ((value: string) => void) | null;
       readonly placeholder: string;
@@ -110,7 +110,7 @@ const Input = React.forwardRef(
     const classes = useStyles({ disabled, monospace, updating });
     const newOnChange = useMemo(
       () =>
-        (event: React.FormEvent<HTMLInputElement>): void => {
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
           if (onChange !== null) {
             onChange(event.currentTarget.value);
           }

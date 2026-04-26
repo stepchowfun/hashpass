@@ -1,13 +1,13 @@
-import sha256, { Hash } from 'fast-sha256';
+import sha256 from 'fast-sha256';
 import { fromByteArray } from 'base64-js';
 
-const rounds = Math.pow(2, 16);
+const rounds = 2 ** 16;
 
 export default function hashpass(
   domain: string,
   universalPassword: string,
 ): string {
-  let bytes = new TextEncoder().encode(
+  let bytes: Uint8Array = new TextEncoder().encode(
     `${domain.trim().toLowerCase()}/${universalPassword}`,
   );
 

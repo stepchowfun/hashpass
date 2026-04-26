@@ -1,26 +1,33 @@
 import execute from './execute';
 
+const isFrameElement = (
+  activeElement: Element | null,
+): activeElement is HTMLIFrameElement =>
+  activeElement !== null && activeElement.tagName === 'IFRAME';
+
+const isInputElement = (
+  activeElement: Element | null,
+): activeElement is HTMLInputElement =>
+  activeElement !== null && activeElement.tagName === 'INPUT';
+
 export default async function fillInPassword(
   generatedPassword: string,
 ): Promise<undefined | null> {
-  return await execute((generatedPassword: string) => {
+  return execute((passwordToFill: string) => {
     let element = document.activeElement;
-    let iframeElementType = HTMLIFrameElement;
-    let inputElementType = HTMLInputElement;
 
-    while (element instanceof iframeElementType) {
-      const contentDocument = element.contentDocument;
-      const contentWindow = element.contentWindow;
+    while (isFrameElement(element)) {
+      const { contentDocument, contentWindow } = element;
 
-      if (contentDocument !== null && contentWindow !== null) {
-        element = contentDocument.activeElement;
-        iframeElementType = (contentWindow as any).HTMLIFrameElement;
-        inputElementType = (contentWindow as any).HTMLInputElement;
+      if (contentDocument === null || contentWindow === null) {
+        break;
       }
+
+      element = contentDocument.activeElement;
     }
 
-    if (element instanceof inputElementType) {
-      element.value = generatedPassword;
+    if (isInputElement(element)) {
+      element.value = passwordToFill;
       return undefined;
     }
 

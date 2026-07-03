@@ -1,11 +1,26 @@
 {
   "compilerOptions": {
-    "jsx": "react",
-    "module": "nodenext",
-    "outDir": "dist",
-    "sourceMap": true,
+    "target": "es2023",
+    "module": "esnext",
+    "lib": ["ES2023", "DOM"],
+    "jsx": "react-jsx",
+    "types": ["vite/client", "chrome"],
+    "allowArbitraryExtensions": true,
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
     "strict": true,
-    "target": "es2021"
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.tsx"]
+  "include": ["src"]
 }

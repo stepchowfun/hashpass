@@ -1,0 +1,46 @@
+.extensionContainer {
+  margin: 16px;
+}
+
+.websiteContainer {
+  width: min-content;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.heading {
+  font-size: 32px;
+  color: #222222;
+}
+
+.icon {
+  position: relative;
+  top: 8px;
+  left: -2px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  padding: 0;
+}
+
+.description {
+  margin-top: 16px;
+  line-height: 16px;
+  font-size: 12px;
+  color: #666666;
+}
+
+.link {
+  color: #0d82d8;
+  font-weight: 600;
+}
+
+.link:hover {
+  color: #d8690d;
+}
+
+.link:active {
+  color: #666666;
+}

@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+defaults:
+  run:
+    shell: bash
 jobs:
   ci:
     name: Validate
@@ -17,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - uses: stepchowfun/toast/.github/actions/toast@main
         with:
-          tasks: build check release
+          tasks: build test lint release run
           docker_repo: stephanmisc/toast
           read_remote_cache: true
           write_remote_cache: ${{ github.event_name == 'push' }}
@@ -31,9 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{steps.deployment.outputs.page_url}}
+      url: ${{ steps.deployment.outputs.page_url }}
     permissions:
       pages: write
       id-token: write
     steps:
       - uses: actions/deploy-pages@v5.0.0
+        id: deployment

@@ -1,10 +1,10 @@
-import hashpass from './hashpass';
-import type { Request, Response } from './worker-protocol';
+import hashpass from "./hashpass.ts";
+import type { Request, Response } from "./worker-protocol.ts";
 
-self.onmessage = (event) => {
-  let request: Request = event.data;
+self.onmessage = (event: MessageEvent<Request>) => {
+  const request = event.data;
 
-  let response: Response = {
+  const response: Response = {
     messageId: request.messageId,
     generatedPassword: hashpass(request.domain, request.universalPassword),
   };

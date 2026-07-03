@@ -15,6 +15,7 @@ A clear explanation of how to reproduce the bug.
 **Environment information:**
 
 - Hashpass version: [e.g., 0.0.0]
+- Chrome version: [e.g., 97.0.4692.71 (Official Build) (x86_64)]
 - OS: [e.g., macOS Tahoe 26.4]
 
 **Additional context**

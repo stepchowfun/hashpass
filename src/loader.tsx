@@ -1,10 +1,10 @@
-import type { ReactElement } from "react";
-import { useEffect, useState } from "react";
+import type { ReactElement } from 'react';
+import { useEffect, useState } from 'react';
 
-import UserInterface from "./user-interface.tsx";
-import fireAndForget from "./fire-and-forget.ts";
-import getDomain from "./get-domain.ts";
-import getIsPasswordFieldActive from "./get-is-password-field-active.ts";
+import UserInterface from './user-interface.tsx';
+import fireAndForget from './fire-and-forget.ts';
+import getDomain from './get-domain.ts';
+import getIsPasswordFieldActive from './get-is-password-field-active.ts';
 
 const Loader = (): ReactElement | null => {
   const [domain, setDomain] = useState<string | null>(null);
@@ -13,7 +13,7 @@ const Loader = (): ReactElement | null => {
   useEffect(() => {
     fireAndForget(
       (async (): Promise<void> => {
-        setDomain((await getDomain()) ?? "");
+        setDomain((await getDomain()) ?? '');
         setIsPasswordFieldActive((await getIsPasswordFieldActive()) ?? false);
       })(),
     );

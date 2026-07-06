@@ -1,4 +1,4 @@
-import execute from "./execute.ts";
+import execute from './execute.ts';
 
 export default async function fillInPassword(generatedPassword: string): Promise<undefined | null> {
   return await execute((newPassword: string) => {

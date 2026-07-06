@@ -1,7 +1,7 @@
-import type { FormEvent, ReactElement, ReactNode, Ref } from "react";
-import { useMemo } from "react";
+import type { FormEvent, ReactElement, ReactNode, Ref } from 'react';
+import { useMemo } from 'react';
 
-import styles from "./input.module.css";
+import styles from './input.module.css';
 
 const Input = ({
   buttons,
@@ -43,7 +43,7 @@ const Input = ({
   ];
 
   return (
-    <label className={containerClasses.join(" ")}>
+    <label className={containerClasses.join(' ')}>
       <div className={styles.label}>{label}</div>
       <input
         className={monospace ? `${styles.input} ${styles.monospace}` : styles.input}
@@ -51,7 +51,7 @@ const Input = ({
         onChange={newOnChange}
         placeholder={placeholder}
         ref={ref}
-        type={hideValue ? "password" : "text"}
+        type={hideValue ? 'password' : 'text'}
         value={value}
       />
       <div className={styles.buttonContainer}>{buttons}</div>

@@ -1,7 +1,7 @@
-import type { Request, Response } from "./worker-protocol.ts";
+import type { Request, Response } from './worker-protocol.ts';
 
 // Spawn a web worker for offloading password generation to a dedicated thread.
-const worker = new Worker(new URL("./worker.ts", import.meta.url), { type: "module" });
+const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' });
 
 // Each message has a unique auto-incrementing identifier.
 let nextMessageId = 0;

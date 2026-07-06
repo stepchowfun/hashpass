@@ -1,12 +1,12 @@
-import type { MouseEvent, ReactElement } from "react";
-import { useCallback } from "react";
+import type { MouseEvent, ReactElement } from 'react';
+import { useCallback } from 'react';
 
-import styles from "./button.module.css";
+import styles from './button.module.css';
 
 export type ButtonType =
-  | { type: "noninteractive" }
-  | { type: "normal"; onClick: () => void }
-  | { type: "submit" };
+  | { type: 'noninteractive' }
+  | { type: 'normal'; onClick: () => void }
+  | { type: 'submit' };
 
 export const Button = ({
   buttonType,
@@ -21,7 +21,7 @@ export const Button = ({
     (event: MouseEvent<HTMLButtonElement>): void => {
       event.currentTarget.blur();
 
-      if (buttonType.type === "normal") {
+      if (buttonType.type === 'normal') {
         event.preventDefault();
         event.stopPropagation();
         buttonType.onClick();
@@ -33,13 +33,13 @@ export const Button = ({
   return (
     <button
       className={
-        buttonType.type === "noninteractive"
+        buttonType.type === 'noninteractive'
           ? `${styles.button} ${styles.noninteractive}`
           : styles.button
       }
       onClick={onClick}
       title={description}
-      type={buttonType.type === "submit" ? "submit" : "button"}
+      type={buttonType.type === 'submit' ? 'submit' : 'button'}
     >
       <img alt={description} className={styles.icon} src={`images/${imageName}.svg`} />
     </button>

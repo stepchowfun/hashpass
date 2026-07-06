@@ -1,13 +1,13 @@
-import debounce from "debounce";
-import type { FormEvent, ReactElement } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import debounce from 'debounce';
+import type { FormEvent, ReactElement } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import Input from "./input.tsx";
-import fillInPassword from "./fill-in-password.ts";
-import fireAndForget from "./fire-and-forget.ts";
-import hashpass from "./worker-client.ts";
-import { Button } from "./button.tsx";
-import styles from "./user-interface.module.css";
+import Input from './input.tsx';
+import fillInPassword from './fill-in-password.ts';
+import fireAndForget from './fire-and-forget.ts';
+import hashpass from './worker-client.ts';
+import { Button } from './button.tsx';
+import styles from './user-interface.module.css';
 
 const debounceMilliseconds = 200;
 const copyToClipboardSuccessIndicatorMilliseconds = 1000;
@@ -20,9 +20,9 @@ const UserInterface = ({
   readonly isPasswordFieldActive: boolean;
 }): ReactElement => {
   const [domain, setDomain] = useState<string | null>(initialDomain);
-  const [universalPassword, setUniversalPassword] = useState("");
+  const [universalPassword, setUniversalPassword] = useState('');
   const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] = useState(true);
-  const [generatedPassword, setGeneratedPassword] = useState("");
+  const [generatedPassword, setGeneratedPassword] = useState('');
   const [isGeneratedPasswordHidden, setIsGeneratedPasswordHidden] = useState(true);
   const [updatesInProgress, setUpdatesInProgress] = useState(0);
   const [pendingCopyToClipboard, setPendingCopyToClipboard] = useState(false);
@@ -55,7 +55,7 @@ const UserInterface = ({
       setDomain(initialDomain);
 
       if (document.activeElement === document.body) {
-        if (initialDomain === "") {
+        if (initialDomain === '') {
           if (domainElement !== null) {
             domainElement.focus();
           }
@@ -67,11 +67,11 @@ const UserInterface = ({
   }, [domain, initialDomain]);
 
   useEffect(() => {
-    updateGeneratedPassword(domain ?? "", universalPassword);
+    updateGeneratedPassword(domain ?? '', universalPassword);
   }, [updateGeneratedPassword, domain, universalPassword]);
 
   const onResetDomain = useCallback((): void => {
-    setDomain(initialDomain ?? "");
+    setDomain(initialDomain ?? '');
 
     const universalPasswordElement = universalPasswordRef.current;
 
@@ -151,7 +151,7 @@ const UserInterface = ({
             ? []
             : [
                 <Button
-                  buttonType={{ type: "normal", onClick: onResetDomain }}
+                  buttonType={{ type: 'normal', onClick: onResetDomain }}
                   description="Reset the domain."
                   imageName="refresh"
                   key="refresh"
@@ -166,17 +166,17 @@ const UserInterface = ({
         placeholder="example.com"
         ref={domainRef}
         updating={false}
-        value={domain ?? ""}
+        value={domain ?? ''}
       />
       <Input
         buttons={[
           <Button
             buttonType={{
-              type: "normal",
+              type: 'normal',
               onClick: onToggleUniversalPasswordHidden,
             }}
-            description={isUniversalPasswordHidden ? "Show the password." : "Hide the password."}
-            imageName={isUniversalPasswordHidden ? "eye-off" : "eye"}
+            description={isUniversalPasswordHidden ? 'Show the password.' : 'Hide the password.'}
+            imageName={isUniversalPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
           />,
         ]}
@@ -195,7 +195,7 @@ const UserInterface = ({
           ...(isPasswordFieldActive
             ? [
                 <Button
-                  buttonType={{ type: "submit" }}
+                  buttonType={{ type: 'submit' }}
                   description="Fill in the password field and close Hashpass."
                   imageName="log-in"
                   key="log-in"
@@ -205,31 +205,31 @@ const UserInterface = ({
           <Button
             buttonType={
               copyToClipboardTimeoutId
-                ? { type: "noninteractive" }
+                ? { type: 'noninteractive' }
                 : {
-                    type: "normal",
+                    type: 'normal',
                     onClick: onCopyGeneratedPasswordToClipboard,
                   }
             }
             description="Copy the password to the clipboard."
-            imageName={copyToClipboardTimeoutId ? "check" : "clipboard-copy"}
+            imageName={copyToClipboardTimeoutId ? 'check' : 'clipboard-copy'}
             key="clipboard-copy"
           />,
           <Button
             buttonType={{
-              type: "normal",
+              type: 'normal',
               onClick: onToggleGeneratedPasswordHidden,
             }}
-            description={isGeneratedPasswordHidden ? "Show the password." : "Hide the password."}
-            imageName={isGeneratedPasswordHidden ? "eye-off" : "eye"}
+            description={isGeneratedPasswordHidden ? 'Show the password.' : 'Hide the password.'}
+            imageName={isGeneratedPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
           />,
         ]}
         disabled
         hideValue={isGeneratedPasswordHidden}
         label={
-          (domain ?? "").trim() === "" ? (
-            "Password for this domain"
+          (domain ?? '').trim() === '' ? (
+            'Password for this domain'
           ) : (
             <span>
               Password for <span className={styles.domain}>{domain}</span>

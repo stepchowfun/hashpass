@@ -1,15 +1,15 @@
-import type { ReactElement } from "react";
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import type { ReactElement } from 'react';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 
-import Loader from "./loader.tsx";
-import "./main.css";
-import styles from "./main.module.css";
+import Loader from './loader.tsx';
+import './main.css';
+import styles from './main.module.css';
 
-const chromeExtensionProtocol = "chrome-extension:";
+const chromeExtensionProtocol = 'chrome-extension:';
 const chromeExtensionUrl =
-  "https://chromewebstore.google.com/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko";
-const githubUrl = "https://github.com/stepchowfun/hashpass";
+  'https://chromewebstore.google.com/detail/hashpass/gkmegkoiplibopkmieofaaeloldidnko';
+const githubUrl = 'https://github.com/stepchowfun/hashpass';
 
 const Main = (): ReactElement => {
   if (window.location.protocol === chromeExtensionProtocol) {
@@ -29,11 +29,11 @@ const Main = (): ReactElement => {
         <Loader />
       </div>
       <p className={styles.description}>
-        Get the Chrome extension{" "}
+        Get the Chrome extension{' '}
         <a className={styles.link} href={chromeExtensionUrl}>
           here
         </a>
-        . You can learn about Hashpass and browse its source code{" "}
+        . You can learn about Hashpass and browse its source code{' '}
         <a className={styles.link} href={githubUrl}>
           here
         </a>
@@ -43,7 +43,7 @@ const Main = (): ReactElement => {
   );
 };
 
-createRoot(document.body.appendChild(document.createElement("div"))).render(
+createRoot(document.body.appendChild(document.createElement('div'))).render(
   <StrictMode>
     <Main />
   </StrictMode>,

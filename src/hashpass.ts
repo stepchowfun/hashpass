@@ -1,5 +1,5 @@
-import sha256 from "fast-sha256";
-import { fromByteArray } from "base64-js";
+import sha256 from 'fast-sha256';
+import { fromByteArray } from 'base64-js';
 
 const rounds = Math.pow(2, 16);
 

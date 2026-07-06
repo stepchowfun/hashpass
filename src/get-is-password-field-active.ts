@@ -1,4 +1,4 @@
-import execute from "./execute.ts";
+import execute from './execute.ts';
 
 export default async function getIsPasswordFieldActive(): Promise<boolean | null> {
   return await execute(() => {
@@ -19,7 +19,7 @@ export default async function getIsPasswordFieldActive(): Promise<boolean | null
     }
 
     if (element instanceof inputElementType) {
-      return element.type.trim().toLowerCase() === "password";
+      return element.type.trim().toLowerCase() === 'password';
     }
 
     return false;

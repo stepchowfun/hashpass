@@ -1,3 +1,3 @@
-import { test } from "vite-plus/test";
+import { test } from 'vite-plus/test';
 
-test.todo("todo");
+test.todo('todo');

@@ -43,7 +43,7 @@ Nothing changed in this version except internal refactoring needed to support th
 ## [2.1.1] - 2022-01-26
 
 ### Changed
-- Hashpass now works even if it does not have access to the current tab, even thouhg in that case some functionality is limited. In particular, it cannot automatically determine the domain or fill in the password field.
+- Hashpass now works even if it does not have access to the current tab, even though in that case some functionality is limited. In particular, it cannot automatically determine the domain or fill in the password field.
 
 ## [2.1.0] - 2022-01-25
 
@@ -53,7 +53,7 @@ Nothing changed in this version except internal refactoring needed to support th
 ## [2.0.2] - 2022-01-25
 
 ### Changed
-- Hashpass now has a subtle visual indication of when its recalculating the generated password.
+- Hashpass now has a subtle visual indication of when it's recalculating the generated password.
 
 ## [2.0.1] - 2022-01-25
 

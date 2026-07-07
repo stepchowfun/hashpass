@@ -4,6 +4,7 @@ about: Create a bug report to help us improve
 title: ''
 labels: bug
 assignees: ''
+
 ---
 
 **Description**
@@ -13,10 +14,9 @@ A clear description of what the bug is.
 A clear explanation of how to reproduce the bug.
 
 **Environment information:**
-
-- Hashpass version: [e.g., 0.0.0]
-- Chrome version: [e.g., 97.0.4692.71 (Official Build) (x86_64)]
-- OS: [e.g., macOS Tahoe 26.4]
+ - Hashpass version: [e.g., 0.0.0]
+ - Chrome version: [e.g., 97.0.4692.71 (Official Build) (x86_64)]
+ - OS: [e.g., macOS Tahoe 26.4]
 
 **Additional context**
 Add any other context about the problem here.

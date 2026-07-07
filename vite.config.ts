@@ -4,7 +4,7 @@ export default defineConfig({
   // Use relative asset URLs so the build works both as an extension popup and as a static website
   // served from any path.
   base: './',
-  fmt: { singleQuote: true },
+  fmt: { singleQuote: true, ignorePatterns: ['**/*.md'] },
   lint: {
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
     rules: { 'vite-plus/prefer-vite-plus-imports': 'error' },

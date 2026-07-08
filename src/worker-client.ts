@@ -13,7 +13,6 @@ const requests = new Map<number, (generatedPassword: string) => void>();
 worker.addEventListener('message', (event: MessageEvent<Response>): void => {
   const resolve = requests.get(event.data.messageId);
 
-  // oxlint-disable-next-line no-undefined -- Map#get uses undefined to signal a missing request.
   if (resolve === undefined) {
     return;
   }

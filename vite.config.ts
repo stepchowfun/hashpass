@@ -28,6 +28,7 @@ export default defineConfig({
     },
     plugins: ['oxc', 'react', 'typescript', 'unicorn'],
     rules: {
+      'no-undefined': 'allow',
       'oxc/no-async-await': 'allow',
     },
   },

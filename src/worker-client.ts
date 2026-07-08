@@ -1,4 +1,3 @@
-// oxlint-disable oxc/no-async-await -- This worker client exposes a Promise-based API.
 import type { Request, Response } from './worker-protocol.ts';
 
 // Spawn a web worker for offloading password generation to a dedicated thread.

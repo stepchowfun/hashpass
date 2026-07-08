@@ -1,4 +1,4 @@
-// oxlint-disable oxc/no-async-await react/jsx-filename-extension react/react-in-jsx-scope -- Hashpass uses async effects, TSX files, and React's automatic JSX runtime.
+// oxlint-disable react/jsx-filename-extension react/react-in-jsx-scope -- Hashpass uses TSX files and React's automatic JSX runtime.
 import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 

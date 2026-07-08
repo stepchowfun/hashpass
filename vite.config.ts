@@ -27,6 +27,9 @@ export default defineConfig({
       typeCheck: true,
     },
     plugins: ['oxc', 'react', 'typescript', 'unicorn'],
+    rules: {
+      'oxc/no-async-await': 'allow',
+    },
   },
   plugins: lazyPlugins(() => [react()]),
 });

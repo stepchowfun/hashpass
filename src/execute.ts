@@ -1,4 +1,3 @@
-// oxlint-disable oxc/no-async-await -- Chrome extension APIs are clearer with async/await.
 function hasResult<T>(
   injectionResult: chrome.scripting.InjectionResult<T>,
 ): injectionResult is chrome.scripting.InjectionResult<T> & { result: T } {

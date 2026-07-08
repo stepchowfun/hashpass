@@ -99,7 +99,7 @@ tasks:
       - build
     command: |
       # Check formatting, lint, and check types.
-      npm run check
+      npm run lint
 
       # Check references with Tagref.
       tagref

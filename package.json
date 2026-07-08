@@ -7,7 +7,7 @@
     "dev": "vp dev",
     "build": "tsc && vp build",
     "test": "vp test",
-    "check": "vp check",
+    "lint": "vp check",
     "format": "vp fmt",
     "preview": "vp preview"
   },

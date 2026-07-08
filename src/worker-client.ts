@@ -7,15 +7,21 @@ const worker = new Worker(new URL('./worker.ts', import.meta.url), { type: 'modu
 let nextMessageId = 0;
 
 // Keep track of all in-flight requests so we know what to do with the corresponding responses.
-const requests: Record<number, (generatedPassword: string) => void> = {};
+const requests = new Map<number, (generatedPassword: string) => void>();
 
 // This is the handler for incoming responses.
-worker.onmessage = (event: MessageEvent<Response>) => {
-  requests[event.data.messageId](event.data.generatedPassword);
-  delete requests[event.data.messageId];
+worker.onmessage = (event: MessageEvent<Response>): void => {
+  const resolve = requests.get(event.data.messageId);
+
+  if (resolve === undefined) {
+    return;
+  }
+
+  resolve(event.data.generatedPassword);
+  requests.delete(event.data.messageId);
 };
 
-export default function hashpass(domain: string, universalPassword: string): Promise<string> {
+export default async function hashpass(domain: string, universalPassword: string): Promise<string> {
   return new Promise((resolve) => {
     const request: Request = {
       messageId: nextMessageId,
@@ -23,7 +29,7 @@ export default function hashpass(domain: string, universalPassword: string): Pro
       universalPassword,
     };
 
-    requests[nextMessageId] = resolve;
+    requests.set(nextMessageId, resolve);
 
     worker.postMessage(request);
 

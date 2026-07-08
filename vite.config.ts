@@ -1,27 +1,17 @@
 import { defineConfig, lazyPlugins } from 'vite-plus';
 import react from '@vitejs/plugin-react';
 
-// https://vite.dev/config/
 export default defineConfig({
   // Use relative asset URLs so the build works both as an extension popup and as a static website
   // served from any path.
   base: './',
-  fmt: { singleQuote: true, ignorePatterns: ['**/*.md'] },
+  fmt: { ignorePatterns: ['**/*.md'], singleQuote: true },
   lint: {
-    plugins: ['react', 'typescript', 'oxc'],
-    rules: {
-      'react/rules-of-hooks': 'error',
-      'react/only-export-components': [
-        'warn',
-        {
-          allowConstantExport: true,
-        },
-      ],
-      'vite-plus/prefer-vite-plus-imports': 'error',
-    },
-    options: {
-      typeAware: true,
-      typeCheck: true,
+    categories: {
+      correctness: 'deny',
+      perf: 'deny',
+      restriction: 'deny',
+      suspicious: 'deny',
     },
     jsPlugins: [
       {
@@ -29,6 +19,20 @@ export default defineConfig({
         specifier: 'vite-plus/oxlint-plugin',
       },
     ],
+    options: {
+      typeAware: true,
+      typeCheck: true,
+    },
+    plugins: ['react', 'typescript', 'oxc'],
+    rules: {
+      'no-undefined': 'allow',
+      'oxc/no-async-await': 'allow',
+      'react/jsx-filename-extension': 'allow',
+      'react/jsx-no-literals': 'allow',
+      'react/react-in-jsx-scope': 'allow',
+      'react/rules-of-hooks': 'deny',
+      'vite-plus/prefer-vite-plus-imports': 'deny',
+    },
   },
   plugins: lazyPlugins(() => [react()]),
 });

@@ -81,7 +81,7 @@ tasks:
     dependencies:
       - repository
     command: |
-      # Build the extension with Vite+.
+      # Build the extension.
       npm ci
       npm run build
 
@@ -90,7 +90,7 @@ tasks:
     dependencies:
       - build
     command: |
-      # Run the tests with Vite+.
+      # Run the tests.
       npm test
 
   lint:
@@ -98,7 +98,7 @@ tasks:
     dependencies:
       - build
     command: |
-      # Check formatting, lint, and check types with Vite+.
+      # Check formatting, lint, and check types.
       npm run check
 
       # Check references with Tagref.
@@ -121,11 +121,6 @@ tasks:
       - build
     output_paths:
       - .github
-      - CHANGELOG.md
-      - CODE_OF_CONDUCT.md
-      - CONTRIBUTING.md
-      - MAINTAINERS.md
-      - README.md
       - index.html
       - package.json
       - public
@@ -133,7 +128,7 @@ tasks:
       - tsconfig.json
       - vite.config.ts
     command: |
-      # Format the source code with Vite+.
+      # Format the source code.
       npm run format
 
   release:

@@ -8,8 +8,7 @@
     "build": "tsc -b && vp build",
     "test": "vp test",
     "lint": "vp check",
-    "format": "vp fmt",
-    "preview": "vp preview"
+    "format": "vp fmt"
   },
   "dependencies": {
     "base64-js": "^1.5.1",

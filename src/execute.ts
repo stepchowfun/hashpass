@@ -1,7 +1,13 @@
+function hasResult<T>(
+  injectionResult: chrome.scripting.InjectionResult<T>,
+): injectionResult is chrome.scripting.InjectionResult<T> & { result: T } {
+  return Object.hasOwn(injectionResult, 'result');
+}
+
 export default async function execute<T, U>(
   func: (argument: T) => U,
   argument: T,
-): Promise<U | null> {
+): Promise<chrome.scripting.Awaited<U> | null> {
   let tab;
 
   try {
@@ -12,14 +18,14 @@ export default async function execute<T, U>(
 
   const tabId = tab.id;
 
-  if (tabId === undefined) {
+  if (typeof tabId !== 'number') {
     return null;
   }
 
-  let result;
+  let injectionResult: chrome.scripting.InjectionResult<chrome.scripting.Awaited<U>>;
 
   try {
-    [{ result }] = await chrome.scripting.executeScript({
+    [injectionResult] = await chrome.scripting.executeScript<[T], U>({
       target: { tabId },
       func,
       args: [argument],
@@ -28,5 +34,9 @@ export default async function execute<T, U>(
     return null;
   }
 
-  return result as U | null;
+  if (!hasResult(injectionResult)) {
+    return null;
+  }
+
+  return injectionResult.result;
 }

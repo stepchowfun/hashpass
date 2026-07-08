@@ -9,12 +9,12 @@ export default async function getIsPasswordFieldActive(): Promise<boolean | null
     // If the active element is an iframe, descend into it to find the innermost active element.
     while (element instanceof iframeElementType) {
       const contentDocument = element.contentDocument;
-      const contentWindow = element.contentWindow as (Window & typeof globalThis) | null;
+      const contentWindow = element.contentWindow;
 
       if (contentDocument !== null && contentWindow !== null) {
         element = contentDocument.activeElement;
-        iframeElementType = contentWindow.HTMLIFrameElement;
-        inputElementType = contentWindow.HTMLInputElement;
+        iframeElementType = contentWindow.window.HTMLIFrameElement;
+        inputElementType = contentWindow.window.HTMLInputElement;
       }
     }
 

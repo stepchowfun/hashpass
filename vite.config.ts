@@ -5,7 +5,10 @@ export default defineConfig({
   // Use relative asset URLs so the build works both as an extension popup and as a static website
   // served from any path.
   base: './',
-  fmt: { ignorePatterns: ['**/*.md'], singleQuote: true },
+  fmt: {
+    ignorePatterns: ['**/*.md'],
+    singleQuote: true,
+  },
   lint: {
     categories: {
       correctness: 'deny',

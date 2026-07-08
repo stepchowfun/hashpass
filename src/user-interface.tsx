@@ -1,6 +1,6 @@
 import debounce from 'debounce';
 import type { FormEvent, ReactElement } from 'react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Input from './input.tsx';
 import fillInPassword from './fill-in-password.ts';
@@ -33,16 +33,17 @@ const UserInterface = ({
   const domainRef = useRef<HTMLInputElement>(null);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
-  const updateGeneratedPassword = useCallback(
-    debounce((newDomain: string, newUniversalPassword: string) => {
-      setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress + 1);
-      fireAndForget(
-        (async (): Promise<void> => {
-          setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
-          setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress - 1);
-        })(),
-      );
-    }, debounceMilliseconds),
+  const updateGeneratedPassword = useMemo(
+    () =>
+      debounce((newDomain: string, newUniversalPassword: string) => {
+        setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress + 1);
+        fireAndForget(
+          (async (): Promise<void> => {
+            setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
+            setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress - 1);
+          })(),
+        );
+      }, debounceMilliseconds),
     [],
   );
 

@@ -1,22 +1,16 @@
-import * as React from 'react';
 import debounce from 'debounce';
-import { createUseStyles } from 'react-jss';
-import { useEffect, useCallback, useRef, useState } from 'react';
+import type { FormEvent, ReactElement } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import Input from './input';
-import fillInPassword from './fill-in-password';
-import fireAndForget from './fire-and-forget';
-import hashpass from './worker-client';
-import { Button } from './button';
+import Input from './input.tsx';
+import fillInPassword from './fill-in-password.ts';
+import fireAndForget from './fire-and-forget.ts';
+import hashpass from './worker-client.ts';
+import { Button } from './button.tsx';
+import styles from './user-interface.module.css';
 
 const debounceMilliseconds = 200;
 const copyToClipboardSuccessIndicatorMilliseconds = 1000;
-
-const useStyles = createUseStyles({
-  domain: {
-    color: '#666666',
-  },
-});
 
 const UserInterface = ({
   initialDomain,
@@ -24,41 +18,32 @@ const UserInterface = ({
 }: {
   readonly initialDomain: string | null;
   readonly isPasswordFieldActive: boolean;
-}): React.ReactElement => {
-  const classes = useStyles();
+}): ReactElement => {
   const [domain, setDomain] = useState<string | null>(initialDomain);
   const [universalPassword, setUniversalPassword] = useState('');
-  const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] =
-    useState(true);
+  const [isUniversalPasswordHidden, setIsUniversalPasswordHidden] = useState(true);
   const [generatedPassword, setGeneratedPassword] = useState('');
-  const [isGeneratedPasswordHidden, setIsGeneratedPasswordHidden] =
-    useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Start with 0 tasks in progress.
+  const [isGeneratedPasswordHidden, setIsGeneratedPasswordHidden] = useState(true);
   const [updatesInProgress, setUpdatesInProgress] = useState(0);
   const [pendingCopyToClipboard, setPendingCopyToClipboard] = useState(false);
-  const [copyToClipboardTimeoutId, setCopyToClipboardTimeoutId] =
-    useState<ReturnType<typeof setTimeout> | null>(null);
+  const [copyToClipboardTimeoutId, setCopyToClipboardTimeoutId] = useState<ReturnType<
+    typeof setTimeout
+  > | null>(null);
   const [pendingFillInPassword, setPendingFillInPassword] = useState(false);
   const domainRef = useRef<HTMLInputElement>(null);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- We need to debounce this function.
-  const updateGeneratedPassword = useCallback(
-    debounce((newDomain: string, newUniversalPassword: string) => {
-      setUpdatesInProgress(
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Increment = +1.
-        (previousTasksInProgress) => previousTasksInProgress + 1,
-      );
-      fireAndForget(
-        (async (): Promise<void> => {
-          setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
-          setUpdatesInProgress(
-            // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Decrement = -1.
-            (previousTasksInProgress) => previousTasksInProgress - 1,
-          );
-        })(),
-      );
-    }, debounceMilliseconds),
+  const updateGeneratedPassword = useMemo(
+    () =>
+      debounce((newDomain: string, newUniversalPassword: string) => {
+        setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress + 1);
+        fireAndForget(
+          (async (): Promise<void> => {
+            setGeneratedPassword(await hashpass(newDomain, newUniversalPassword));
+            setUpdatesInProgress((previousTasksInProgress) => previousTasksInProgress - 1);
+          })(),
+        );
+      }, debounceMilliseconds),
     [],
   );
 
@@ -116,7 +101,7 @@ const UserInterface = ({
   }, [isGeneratedPasswordHidden]);
 
   const onFormSubmit = useCallback(
-    (event: React.FormEvent): void => {
+    (event: FormEvent): void => {
       event.preventDefault();
       event.stopPropagation();
 
@@ -126,7 +111,6 @@ const UserInterface = ({
     [updateGeneratedPassword],
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- No tasks in progress?
   if (updatesInProgress === 0) {
     if (pendingCopyToClipboard) {
       setPendingCopyToClipboard(false);
@@ -192,11 +176,7 @@ const UserInterface = ({
               type: 'normal',
               onClick: onToggleUniversalPasswordHidden,
             }}
-            description={
-              isUniversalPasswordHidden
-                ? 'Show the password.'
-                : 'Hide the password.'
-            }
+            description={isUniversalPasswordHidden ? 'Show the password.' : 'Hide the password.'}
             imageName={isUniversalPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
           />,
@@ -241,11 +221,7 @@ const UserInterface = ({
               type: 'normal',
               onClick: onToggleGeneratedPasswordHidden,
             }}
-            description={
-              isGeneratedPasswordHidden
-                ? 'Show the password.'
-                : 'Hide the password.'
-            }
+            description={isGeneratedPasswordHidden ? 'Show the password.' : 'Hide the password.'}
             imageName={isGeneratedPasswordHidden ? 'eye-off' : 'eye'}
             key="eye"
           />,
@@ -257,14 +233,13 @@ const UserInterface = ({
             'Password for this domain'
           ) : (
             <span>
-              Password for <span className={classes.domain}>{domain}</span>
+              Password for <span className={styles.domain}>{domain}</span>
             </span>
           )
         }
         monospace
         onChange={null}
         placeholder=""
-        // eslint-disable-next-line @typescript-eslint/no-magic-numbers -- Any tasks in progress?
         updating={updatesInProgress !== 0}
         value={generatedPassword}
       />

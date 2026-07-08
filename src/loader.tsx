@@ -1,15 +1,14 @@
-import * as React from 'react';
+import type { ReactElement } from 'react';
 import { useEffect, useState } from 'react';
 
-import UserInterface from './user-interface';
-import fireAndForget from './fire-and-forget';
-import getDomain from './get-domain';
-import getIsPasswordFieldActive from './get-is-password-field-active';
+import UserInterface from './user-interface.tsx';
+import fireAndForget from './fire-and-forget.ts';
+import getDomain from './get-domain.ts';
+import getIsPasswordFieldActive from './get-is-password-field-active.ts';
 
-const Loader = (): React.ReactElement | null => {
+const Loader = (): ReactElement | null => {
   const [domain, setDomain] = useState<string | null>(null);
-  const [isPasswordFieldActive, setIsPasswordFieldActive] =
-    useState<boolean>(false);
+  const [isPasswordFieldActive, setIsPasswordFieldActive] = useState<boolean>(false);
 
   useEffect(() => {
     fireAndForget(
@@ -20,12 +19,7 @@ const Loader = (): React.ReactElement | null => {
     );
   }, []);
 
-  return (
-    <UserInterface
-      initialDomain={domain}
-      isPasswordFieldActive={isPasswordFieldActive}
-    />
-  );
+  return <UserInterface initialDomain={domain} isPasswordFieldActive={isPasswordFieldActive} />;
 };
 
 export default Loader;

@@ -1,4 +1,5 @@
-import hashpass from './hashpass';
+import { expect, test } from 'vite-plus/test';
+import hashpass from './hashpass.ts';
 
 test('returns the correct result for empty inputs', () => {
   expect(hashpass('', '')).toBe('QLVrEfcwJgNzLdCK');
@@ -15,9 +16,7 @@ test('strips whitespace from the domain', () => {
 
 test('does not strip whitespace from the password', () => {
   expect(hashpass('www.example.com', 'password')).toBe('iOHMvVHFSjclBQgu');
-  expect(hashpass('www.example.com', ' password ')).not.toBe(
-    'iOHMvVHFSjclBQgu',
-  );
+  expect(hashpass('www.example.com', ' password ')).not.toBe('iOHMvVHFSjclBQgu');
 });
 
 test('is case-insensitive for domains', () => {

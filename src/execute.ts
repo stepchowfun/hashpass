@@ -6,7 +6,7 @@ export default async function execute<T, U>(
 
   try {
     [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-  } catch (e) {
+  } catch {
     return null;
   }
 
@@ -24,9 +24,9 @@ export default async function execute<T, U>(
       func,
       args: [argument],
     });
-  } catch (e) {
+  } catch {
     return null;
   }
 
-  return result as Promise<U>;
+  return result as U | null;
 }

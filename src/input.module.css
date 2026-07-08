@@ -1,0 +1,82 @@
+.container {
+  /* Create a block formatting context to contain margins of descendants. */
+  display: flow-root;
+
+  /* Used for positioning the button container (below). */
+  position: relative;
+
+  width: 320px;
+  height: 64px;
+  margin-top: 16px;
+  border: 2px solid #cccccc;
+  border-radius: 8px;
+  cursor: text;
+}
+
+.container:focus-within {
+  border-color: #56b8ff;
+}
+
+.container.disabled:focus-within {
+  border-color: #cccccc;
+}
+
+.container.updating {
+  background: #fafafa;
+}
+
+.label {
+  width: 200px;
+  height: 20px;
+  margin: 6px 16px 0 16px;
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #999999;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: text;
+  user-select: none;
+}
+
+.container.disabled .label {
+  cursor: default;
+}
+
+.input {
+  display: block;
+  width: 288px;
+  height: 28px;
+  margin: 0 16px 6px 16px;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  background: transparent;
+  line-height: 28px;
+  font-size: 16px;
+  color: #222222;
+}
+
+.input.monospace {
+  font-family:
+    ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+}
+
+.buttonContainer {
+  display: flex;
+
+  /* Overlay on top of the container (above). */
+  position: absolute;
+  top: 20px;
+  left: 0;
+
+  width: 316px;
+  height: 24px;
+  justify-content: flex-end;
+  padding-right: 6px;
+
+  /* Don't steal clicks from the container
+     [tag:button_container_pointer_events_none]. */
+  pointer-events: none;
+}

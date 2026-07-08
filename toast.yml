@@ -1,5 +1,5 @@
-image: ubuntu:24.04
-default: check
+image: ubuntu:26.04
+default: build
 user: user
 command_prefix: |
   # Make not silently ignore errors.
@@ -20,13 +20,11 @@ tasks:
     command: |
       # Install the following packages:
       #
-      # - ca-certificates - Used for installing Node.js
+      # - ca-certificates - Used for installing Node.js and Tagref
       # - curl            - Used for installing Node.js and Tagref
-      # - gnupg           - Used for installing Node.js
-      # - ripgrep         - Used for various linting tasks
       # - zip             - Used for producing the production release
       apt-get update
-      apt-get install --yes ca-certificates curl gnupg ripgrep zip
+      apt-get install --yes ca-certificates curl zip
 
   install_tagref:
     description: Install Tagref, a reference checking tool.
@@ -50,11 +48,11 @@ tasks:
       - install_packages
       - create_user
     command: |
-      # Install Node.js.
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+      # Install Node.js via NVM.
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
       export NVM_DIR="$HOME/.nvm"
       . "$NVM_DIR/nvm.sh"
-      nvm install 18.17.0
+      nvm install 24.18.0
 
   install_tools:
     description: Install the tools needed to build and validate the extension.
@@ -73,81 +71,77 @@ tasks:
       - .git
 
       # [tag:excluded_input_paths] Keep this in sync with [file:.gitignore].
-      - website/
       - dist/
       - hashpass.zip
       - node_modules/
+      - website/
 
   build:
     description: Build the extension.
     dependencies:
       - repository
-    input_paths:
-      - src
     command: |
       # Build the extension.
       npm ci
-      npm run build-production # [tag:build_production]
+      npm run build
 
-  check:
-    description: Run the tests and linters.
+  test:
+    description: Run the test suite.
     dependencies:
       - build
     command: |
-      # Validate the source code.
-      npm run check
+      # Run the tests.
+      npm test
+
+  lint:
+    description: Run the linters.
+    dependencies:
+      - build
+    command: |
+      # Check formatting, lint, and check types.
+      npm run lint
 
       # Check references with Tagref.
       tagref
       tagref list-unused --fail-if-any
-
-      # Enforce that lines span no more than 100 columns.
-      if rg --line-number --type ts '.{101}' src; then
-        echo 'There are lines spanning more than 100 columns.' >&2
-        exit 1
-      fi
-
-  release:
-    description: Build the production release.
-    dependencies:
-      - check # [ref:build_production]
-    input_paths:
-      - images
-      - index.html
-      - manifest.json
-    output_paths:
-      - website
-      - hashpass.zip
-    command: |
-      # Create a directory containing the relevant files for the website.
-      mkdir website
-      cp -R \
-        HEROICONS-LICENSE.md \
-        LICENSE.md \
-        dist \
-        images \
-        index.html \
-        website
-
-      # Create a ZIP file containing the relevant files for the Chrome extension.
-      zip -r hashpass.zip \
-        HEROICONS-LICENSE.md \
-        LICENSE.md \
-        dist \
-        images \
-        index.html \
-        manifest.json \
-        src
-
-      # Inform the user of where the artifact is.
-      echo 'Generated `website` and `hashpass.zip`.'
 
   format:
     description: Format the source code.
     dependencies:
       - build
     output_paths:
-      - .
+      - .github
+      - index.html
+      - package.json
+      - public
+      - src
+      - tagref.yml
+      - toast.yml
+      - tsconfig.json
+      - vite.config.ts
     command: |
       # Format the source code.
       npm run format
+
+  release:
+    description: Build the production release.
+    dependencies:
+      - build
+    output_paths:
+      - hashpass.zip
+      - website
+    command: |
+      # Include the licenses in the build output.
+      cp HEROICONS-LICENSE.md LICENSE.md dist
+
+      # Create a directory containing the relevant files for the website. The extension manifest
+      # is not needed there.
+      cp -R dist website
+      rm website/manifest.json
+
+      # Create a ZIP file containing the built extension. The manifest must be at the root of the
+      # archive, so the contents of `dist` are zipped rather than the directory itself.
+      (cd dist && zip -r ../hashpass.zip .)
+
+      # Inform the user of where the artifacts are.
+      echo 'Generated `website` and `hashpass.zip`.'

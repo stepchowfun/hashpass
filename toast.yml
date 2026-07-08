@@ -115,6 +115,8 @@ tasks:
       - package.json
       - public
       - src
+      - tagref.yml
+      - toast.yml
       - tsconfig.json
       - vite.config.ts
     command: |

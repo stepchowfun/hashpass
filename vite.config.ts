@@ -30,6 +30,9 @@ export default defineConfig({
     rules: {
       'no-undefined': 'allow',
       'oxc/no-async-await': 'allow',
+      'react/jsx-filename-extension': 'allow',
+      'react/jsx-no-literals': 'allow',
+      'react/react-in-jsx-scope': 'allow',
     },
   },
   plugins: lazyPlugins(() => [react()]),

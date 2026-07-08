@@ -1,4 +1,3 @@
-// oxlint-disable react/jsx-filename-extension react/react-in-jsx-scope -- Hashpass uses TSX files and React's automatic JSX runtime.
 import debounce from 'debounce';
 import type { FormEvent, ReactElement } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';

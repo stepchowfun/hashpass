@@ -1,4 +1,3 @@
-// oxlint-disable react/jsx-filename-extension react/react-in-jsx-scope -- Hashpass uses TSX files and React's automatic JSX runtime.
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 

@@ -1,4 +1,3 @@
-// oxlint-disable react/jsx-filename-extension react/jsx-no-literals react/react-in-jsx-scope -- Hashpass uses TSX files, React's automatic JSX runtime, and literal UI copy.
 import type { ReactElement } from 'react';
 
 import Loader from './loader.tsx';

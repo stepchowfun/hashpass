@@ -136,8 +136,7 @@ tasks:
 
       # Create a directory containing the relevant files for the website. The extension manifest
       # is not needed there.
-      mkdir website
-      cp -R dist/. website
+      cp -R dist website
       rm website/manifest.json
 
       # Create a ZIP file containing the built extension. The manifest must be at the root of the

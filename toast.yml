@@ -11,9 +11,6 @@ command_prefix: |
     . "$HOME/.nvm/nvm.sh"
   fi
 
-  # Don't install Git hooks in the container, where there is no Git repository.
-  export VITE_GIT_HOOKS=0
-
   # Make Bash log commands.
   set -x
 tasks:
@@ -74,7 +71,6 @@ tasks:
       - .git
 
       # [tag:excluded_input_paths] Keep this in sync with [file:.gitignore].
-      - .vite-hooks/_/
       - dist/
       - hashpass.zip
       - node_modules/

@@ -9,8 +9,7 @@
     "test": "vp test",
     "lint": "vp check",
     "format": "vp fmt",
-    "preview": "vp preview",
-    "prepare": "vp config --no-agent"
+    "preview": "vp preview"
   },
   "dependencies": {
     "base64-js": "^1.5.1",

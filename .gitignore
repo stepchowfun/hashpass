@@ -1,5 +1,4 @@
 # Keep this in sync with [ref:excluded_input_paths].
-/.vite-hooks/_/
 /dist/
 /hashpass.zip
 /node_modules/

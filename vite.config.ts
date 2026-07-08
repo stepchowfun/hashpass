@@ -6,9 +6,6 @@ export default defineConfig({
   // Use relative asset URLs so the build works both as an extension popup and as a static website
   // served from any path.
   base: './',
-  staged: {
-    '*': 'vp check --fix',
-  },
   fmt: { singleQuote: true, ignorePatterns: ['**/*.md'] },
   lint: {
     plugins: ['react', 'typescript', 'oxc'],

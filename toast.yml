@@ -49,10 +49,10 @@ tasks:
       - create_user
     command: |
       # Install Node.js via NVM.
-      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+      curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.5/install.sh | bash
       export NVM_DIR="$HOME/.nvm"
       . "$NVM_DIR/nvm.sh"
-      nvm install 24.14.1
+      nvm install 24.18.0
 
   install_tools:
     description: Install the tools needed to build and validate the extension.

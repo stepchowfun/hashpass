@@ -23,10 +23,10 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "typescript": "~6.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.2",
-    "vite-plus": "0.2.2"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.3",
+    "vite-plus": "0.2.3"
   },
   "overrides": {
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.2"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.3"
   }
 }

@@ -1,3 +1,4 @@
+// oxlint-disable oxc/no-async-await -- This worker client exposes a Promise-based API.
 import type { Request, Response } from './worker-protocol.ts';
 
 // Spawn a web worker for offloading password generation to a dedicated thread.
@@ -13,6 +14,7 @@ const requests = new Map<number, (generatedPassword: string) => void>();
 worker.addEventListener('message', (event: MessageEvent<Response>): void => {
   const resolve = requests.get(event.data.messageId);
 
+  // oxlint-disable-next-line no-undefined -- Map#get uses undefined to signal a missing request.
   if (resolve === undefined) {
     return;
   }
@@ -31,6 +33,7 @@ export default async function hashpass(domain: string, universalPassword: string
 
     requests.set(nextMessageId, resolve);
 
+    // oxlint-disable-next-line unicorn/require-post-message-target-origin -- Worker.postMessage does not take targetOrigin.
     worker.postMessage(request);
 
     nextMessageId = (nextMessageId + 1) % Number.MAX_SAFE_INTEGER;

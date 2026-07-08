@@ -27,14 +27,6 @@ export default defineConfig({
       typeCheck: true,
     },
     plugins: ['oxc', 'react', 'typescript', 'unicorn'],
-    rules: {
-      'no-undefined': 'allow',
-      'oxc/no-async-await': 'allow',
-      'react/jsx-filename-extension': 'allow',
-      'react/jsx-no-literals': 'allow',
-      'react/react-in-jsx-scope': 'allow',
-      'unicorn/require-post-message-target-origin': 'allow',
-    },
   },
   plugins: lazyPlugins(() => [react()]),
 });

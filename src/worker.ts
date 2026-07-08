@@ -9,5 +9,6 @@ self.addEventListener('message', (event: MessageEvent<Request>): void => {
     generatedPassword: hashpass(request.domain, request.universalPassword),
   };
 
+  // oxlint-disable-next-line unicorn/require-post-message-target-origin -- WorkerGlobalScope.postMessage does not take targetOrigin.
   self.postMessage(response);
 });

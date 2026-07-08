@@ -105,16 +105,6 @@ tasks:
       tagref
       tagref list-unused --fail-if-any
 
-  run:
-    description: Run the extension.
-    dependencies:
-      - build
-    command: |
-      # The extension can't meaningfully be "run" headlessly in a container. To try it out, run
-      # `toast release`, unzip `hashpass.zip`, and load it into Chrome via `chrome://extensions`
-      # with `Developer mode` enabled and the `Load unpacked` option.
-      echo 'There is nothing to run in a container; see the comment in this task in toast.yml.'
-
   format:
     description: Format the source code.
     dependencies:

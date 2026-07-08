@@ -10,7 +10,7 @@ let nextMessageId = 0;
 const requests = new Map<number, (generatedPassword: string) => void>();
 
 // This is the handler for incoming responses.
-worker.onmessage = (event: MessageEvent<Response>): void => {
+worker.addEventListener('message', (event: MessageEvent<Response>): void => {
   const resolve = requests.get(event.data.messageId);
 
   if (resolve === undefined) {
@@ -19,7 +19,7 @@ worker.onmessage = (event: MessageEvent<Response>): void => {
 
   resolve(event.data.generatedPassword);
   requests.delete(event.data.messageId);
-};
+});
 
 export default async function hashpass(domain: string, universalPassword: string): Promise<string> {
   return new Promise((resolve) => {

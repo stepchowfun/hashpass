@@ -23,7 +23,7 @@ export default defineConfig({
       typeAware: true,
       typeCheck: true,
     },
-    plugins: ['react', 'typescript', 'oxc'],
+    plugins: ['oxc', 'react', 'typescript', 'unicorn'],
     rules: {
       'no-undefined': 'allow',
       'oxc/no-async-await': 'allow',
@@ -31,6 +31,7 @@ export default defineConfig({
       'react/jsx-no-literals': 'allow',
       'react/react-in-jsx-scope': 'allow',
       'react/rules-of-hooks': 'deny',
+      'unicorn/require-post-message-target-origin': 'allow',
       'vite-plus/prefer-vite-plus-imports': 'deny',
     },
   },

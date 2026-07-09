@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "tsc -b && vp build",
+    "build": "tsc --project tsconfig.json && vp build",
     "test": "vp test",
     "lint": "vp check",
     "format": "vp fmt"

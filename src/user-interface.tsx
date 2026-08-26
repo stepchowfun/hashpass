@@ -33,6 +33,9 @@ const UserInterface = ({
   const domainRef = useRef<HTMLInputElement>(null);
   const universalPasswordRef = useRef<HTMLInputElement>(null);
 
+  // Use a newly available initial domain until the user edits the field.
+  const effectiveDomain = domain ?? initialDomain ?? '';
+
   const updateGeneratedPassword = useMemo(
     () =>
       debounce((newDomain: string, newUniversalPassword: string) => {
@@ -51,10 +54,8 @@ const UserInterface = ({
     const domainElement = domainRef.current;
     const universalPasswordElement = universalPasswordRef.current;
 
-    // Set the domain and focus the appropriate input if necessary.
+    // Focus the appropriate input when the initial domain becomes available.
     if (initialDomain !== null && domain === null) {
-      setDomain(initialDomain);
-
       if (document.activeElement === document.body) {
         if (initialDomain === '') {
           if (domainElement !== null) {
@@ -68,8 +69,8 @@ const UserInterface = ({
   }, [domain, initialDomain]);
 
   useEffect(() => {
-    updateGeneratedPassword(domain ?? '', universalPassword);
-  }, [updateGeneratedPassword, domain, universalPassword]);
+    updateGeneratedPassword(effectiveDomain, universalPassword);
+  }, [updateGeneratedPassword, effectiveDomain, universalPassword]);
 
   const onResetDomain = useCallback((): void => {
     setDomain(initialDomain ?? '');
@@ -148,7 +149,7 @@ const UserInterface = ({
     <form onSubmit={onFormSubmit}>
       <Input
         buttons={
-          initialDomain === null || domain === initialDomain
+          initialDomain === null || effectiveDomain === initialDomain
             ? []
             : [
                 <Button
@@ -167,7 +168,7 @@ const UserInterface = ({
         placeholder="example.com"
         ref={domainRef}
         updating={false}
-        value={domain ?? ''}
+        value={effectiveDomain}
       />
       <Input
         buttons={[
@@ -229,11 +230,11 @@ const UserInterface = ({
         disabled
         hideValue={isGeneratedPasswordHidden}
         label={
-          (domain ?? '').trim() === '' ? (
+          effectiveDomain.trim() === '' ? (
             'Password for this domain'
           ) : (
             <span>
-              Password for <span className={styles.domain}>{domain}</span>
+              Password for <span className={styles.domain}>{effectiveDomain}</span>
             </span>
           )
         }

@@ -70,7 +70,7 @@ tasks:
     excluded_input_paths:
       - .git
 
-      # [tag:excluded_input_paths] Keep this in sync with [file:.gitignore].
+      # [group:excluded_input_paths] Keep this in sync with [file:.gitignore].
       - dist/
       - hashpass.zip
       - node_modules/

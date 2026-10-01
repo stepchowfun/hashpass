@@ -75,6 +75,7 @@ tasks:
       - hashpass.zip
       - node_modules/
       - website/
+      - .vitest/
 
   build:
     description: Build the extension.

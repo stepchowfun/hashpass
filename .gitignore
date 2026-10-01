@@ -3,3 +3,4 @@
 /hashpass.zip
 /node_modules/
 /website/
+.vitest/

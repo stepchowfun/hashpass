@@ -7,7 +7,7 @@ function hasResult<T>(
 export default async function execute<T, U>(
   func: (argument: T) => U,
   argument: T,
-): Promise<chrome.scripting.Awaited<U> | null> {
+): Promise<Awaited<U> | null> {
   let tab;
 
   try {
@@ -22,7 +22,7 @@ export default async function execute<T, U>(
     return null;
   }
 
-  let injectionResult: chrome.scripting.InjectionResult<chrome.scripting.Awaited<U>>;
+  let injectionResult: chrome.scripting.InjectionResult<Awaited<U>>;
 
   try {
     [injectionResult] = await chrome.scripting.executeScript<[T], U>({
